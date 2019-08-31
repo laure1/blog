@@ -406,22 +406,22 @@ height:50vh;
 </blockquote>
 <p>题目内容是：there is nothing</p>
 <p>用Burpsuite抓包一下，能看到一个hint - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1566477766113.png" alt="1566477766113"></p>
+<p><img src="/Summary-of-Web/1566477766113.png" alt="1566477766113"></p>
 <p>它要求要大的内部网络，专用IP地址段为：<a id="more"></a><br>10.0.0.0–10.255.255.255<br>172.16.0.0–172.31.255.255<br>192.168.0.0–192.168.255.255</p>
 <p>所以修改请求头，加上X-Forward-For，一个个试一下。</p>
 <p>当修改为X-Forwarded-For:10.10.10时，会得到一个新的提示Location。</p>
-<p><img src="/2019/08/31/Summary-of-Web/1566477893134.png" alt="1566477893134"></p>
+<p><img src="/Summary-of-Web/1566477893134.png" alt="1566477893134"></p>
 <p>访问这个php地址，内容是：show me your key.</p>
 <p>那大概是要向服务器提交一个key的值吧，GET提交没反应，那就POST方式。</p>
-<p><img src="/2019/08/31/Summary-of-Web/1566479859703.png" alt="1566479859703"></p>
+<p><img src="/Summary-of-Web/1566479859703.png" alt="1566479859703"></p>
 <p>告诉了密文，并且key在md5加密之前是icunqiu***，所以我们需要写一个脚本去找一下key：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">MD5 = <span class="string">"1b4167610ba3f2ac426a68488dbd89be"</span></span><br><span class="line">chars = <span class="string">"abcdefghijklmnopqrstuvwxyz0123456789"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> chars:</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> chars:</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> chars:</span><br><span class="line">            key = <span class="string">"ichunqiu"</span> + i + j + k</span><br><span class="line">            hash = hashlib.md5(key.encode()).hexdigest()</span><br><span class="line">            <span class="keyword">if</span> hash == MD5:</span><br><span class="line">                print(key)</span><br><span class="line">                print(hash)</span><br></pre></td></tr></table></figure>
 
 <p>跑出来得到key为ichunqiu105 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1566478472878.png" alt="1566478472878"></p>
+<p><img src="/Summary-of-Web/1566478472878.png" alt="1566478472878"></p>
 <p>下一步，是一个新的php文件 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1566479915189.png" alt="1566479915189"></p>
-<p><img src="/2019/08/31/Summary-of-Web/1566479970797.png" alt="1566479970797"></p>
+<p><img src="/Summary-of-Web/1566479915189.png" alt="1566479915189"></p>
+<p><img src="/Summary-of-Web/1566479970797.png" alt="1566479970797"></p>
 <p>来看一下sourcecode：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">authcode</span><span class="params">($string, $operation = <span class="string">'DECODE'</span>, $key = <span class="string">''</span>, $expiry = <span class="number">0</span>)</span> </span>&#123;</span><br><span class="line">	$ckey_length = <span class="number">4</span>;</span><br><span class="line">	$key = md5($key ? $key : UC_KEY);</span><br><span class="line">	$keya = md5(substr($key, <span class="number">0</span>, <span class="number">16</span>));</span><br><span class="line">	$keyb = md5(substr($key, <span class="number">16</span>, <span class="number">16</span>));</span><br><span class="line">	$keyc = $ckey_length ? ($operation == <span class="string">'DECODE'</span> ? substr($string, <span class="number">0</span>, $ckey_length) : substr(md5(microtime()), -$ckey_length)) : <span class="string">''</span>;</span><br><span class="line">	$cryptkey = $keya . md5($keya . $keyc);</span><br><span class="line">	$key_length = strlen($cryptkey);</span><br><span class="line">	$string = $operation == <span class="string">'DECODE'</span> ? base64_decode(substr($string, $ckey_length)) : sprintf(<span class="string">'%010d'</span>, $expiry ? $expiry + time() : <span class="number">0</span>) . substr(md5($string . $keyb), <span class="number">0</span>, <span class="number">16</span>) . $string;</span><br><span class="line">	$string_length = strlen($string);</span><br><span class="line">	$result = <span class="string">''</span>;</span><br><span class="line">	$box = range(<span class="number">0</span>, <span class="number">255</span>);</span><br><span class="line">	$rndkey = <span class="keyword">array</span>();</span><br><span class="line">	<span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt;= <span class="number">255</span>; $i++) &#123;</span><br><span class="line">		$rndkey[$i] = ord($cryptkey[$i % $key_length]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> ($j = $i = <span class="number">0</span>; $i &lt; <span class="number">256</span>; $i++) &#123;</span><br><span class="line">		$j = ($j + $box[$i] + $rndkey[$i]) % <span class="number">256</span>;</span><br><span class="line">		$tmp = $box[$i];</span><br><span class="line">		$box[$i] = $box[$j];</span><br><span class="line">		$box[$j] = $tmp;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> ($a = $j = $i = <span class="number">0</span>; $i &lt; $string_length; $i++) &#123;</span><br><span class="line">		$a = ($a + <span class="number">1</span>) % <span class="number">256</span>;</span><br><span class="line">		$j = ($j + $box[$a]) % <span class="number">256</span>;</span><br><span class="line">		$tmp = $box[$a];</span><br><span class="line">		$box[$a] = $box[$j];</span><br><span class="line">		$box[$j] = $tmp;</span><br><span class="line">		$result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % <span class="number">256</span>]));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> ($operation == <span class="string">'DECODE'</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((substr($result, <span class="number">0</span>, <span class="number">10</span>) == <span class="number">0</span> || substr($result, <span class="number">0</span>, <span class="number">10</span>) - time() &gt; <span class="number">0</span>) &amp;&amp; substr($result, <span class="number">10</span>, <span class="number">16</span>) == substr(md5(substr($result, <span class="number">26</span>) . $keyb), <span class="number">0</span>, <span class="number">16</span>)) &#123;</span><br><span class="line">			<span class="keyword">return</span> substr($result, <span class="number">26</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> $keyc . str_replace(<span class="string">'='</span>, <span class="string">''</span>, base64_encode($result));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -435,43 +435,43 @@ height:50vh;
 <p>2017年全国大学生信息安全竞赛</p>
 </blockquote>
 <p>首先是一个登录页面 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1566531195568.png" alt="1566531195568"></p>
+<p><img src="/Summary-of-Web/1566531195568.png" alt="1566531195568"></p>
 <p>随便创建一个账号然后登进去，然后有一大堆的 <strong>绿帽子</strong> …😶</p>
-<p><img src="/2019/08/31/Summary-of-Web/1566531295743.png" alt="1566531295743"></p>
+<p><img src="/Summary-of-Web/1566531295743.png" alt="1566531295743"></p>
 <p>这个页面上，没看到啥有用的东西，返回到登录页面，抓个包看看 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1566531470440.png" alt="1566531470440"></p>
+<p><img src="/Summary-of-Web/1566531470440.png" alt="1566531470440"></p>
 <p>哇有个sql语句欸，尝试修改一下name值，发现它过滤了空格，并且把单引号(‘)转义成了反斜杠(\) - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1566531626452.png" alt="1566531626452"></p>
+<p><img src="/Summary-of-Web/1566531626452.png" alt="1566531626452"></p>
 <p>但是没关系，空格可以被’/**/‘代替，并且如果把单引号放在payload的最后，那跟在后面的单引号就会被’/‘转义。</p>
-<p><img src="/2019/08/31/Summary-of-Web/1566531964225.png" alt="1566531964225"></p>
+<p><img src="/Summary-of-Web/1566531964225.png" alt="1566531964225"></p>
 <p>发送后，可以看到多了一个’good job’，那应该是成功了，用这个payload去登录吧 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1566532188680.png" alt="1566532188680"></p>
+<p><img src="/Summary-of-Web/1566532188680.png" alt="1566532188680"></p>
 <hr>
 <h3 id="№-3-Hello-World"><a href="#№-3-Hello-World" class="headerlink" title="№.3 Hello World"></a>№.3 Hello World</h3><p>是一个Hello World界面 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567066965022.png" alt="1567066965022"></p>
+<p><img src="/Summary-of-Web/1567066965022.png" alt="1567066965022"></p>
 <p>先看一下源码 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567067003511.png" alt="1567067003511"></p>
+<p><img src="/Summary-of-Web/1567067003511.png" alt="1567067003511"></p>
 <p>访问一下flag.xmas.js，但是404了，尝试访问flag.js，有内容 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567067074289.png" alt="1567067074289"></p>
+<p><img src="/Summary-of-Web/1567067074289.png" alt="1567067074289"></p>
 <p>有点东西，我甚至把js代码格式化分析了一下，但是太长了，我还是不会做…</p>
 <p>然鹅，题目的思路是.git泄露，.git/logs/HEAD文件的利用。如果用githack的话，会漏掉部分object - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567067185020.png" alt="1567067185020"></p>
+<p><img src="/Summary-of-Web/1567067185020.png" alt="1567067185020"></p>
 <p>改用gitextract，能提取出两个flag文件 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567067300922.png" alt="1567067300922"></p>
+<p><img src="/Summary-of-Web/1567067300922.png" alt="1567067300922"></p>
 <p>这两个flag是不太一样的，用diff命令看一下不一样的地方 - -</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff flag.js flag.js.04bb09</span><br></pre></td></tr></table></figure>
 
 <p>可以看到前面不一样的地方拼起来是flag{ - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567067476771.png" alt="1567067476771"></p>
+<p><img src="/Summary-of-Web/1567067476771.png" alt="1567067476771"></p>
 <p>flag{82efc37f1cd5d4636ea7cadcd5a814a2}</p>
 <hr>
 <h3 id="№-4-Upload"><a href="#№-4-Upload" class="headerlink" title="№.4 Upload"></a>№.4 Upload</h3><blockquote>
 <p>今天开始做web题目，发现前面的都好难，中间的都做过了，就随便挑了一道，发现竟然是去年做过的题目，只是因为flag提交了不对所以没交flag…一年过去了，没有学过python的我还是这么菜，有点难过…我为什么这么菜呢，可能因为我不专心吧…</p>
 </blockquote>
-<p>题目内容是 - -<img src="/2019/08/31/Summary-of-Web/1567173495060.png" alt="1567173495060"></p>
-<p>可以看到响应头这里有个flag - -<img src="/2019/08/31/Summary-of-Web/1567173561188.png" alt="1567173561188"></p>
+<p>题目内容是 - -<img src="/Summary-of-Web/1567173495060.png" alt="1567173495060"></p>
+<p>可以看到响应头这里有个flag - -<img src="/Summary-of-Web/1567173561188.png" alt="1567173561188"></p>
 <p>base64解码一下 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567173627456.png" alt="1567173627456"></p>
+<p><img src="/Summary-of-Web/1567173627456.png" alt="1567173627456"></p>
 <p>并且每一次刷新页面，flag_is_here:后面的值都会变。需要写脚本读取页面的flag参数的值然后再把后面的值传过去，注意这个base64可以解两次。</p>
 <blockquote>
 <p>去年省赛的一道题目和这个很像，都是需要解码两次base64，小白的我只解一次脚本半天跑不出来，难过死了，，今年比赛估计一如既往地难过…说白了就是窝太菜了。</p>
@@ -480,18 +480,18 @@ height:50vh;
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64,requests</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    a = requests.session()</span><br><span class="line">    b = a.get(<span class="string">"http://1d244bd2e1664e07b80cc2b714ddc1c4a12576508f544c34.changame.ichunqiu.com/"</span>)</span><br><span class="line">    key1 = b.headers[<span class="string">"flag"</span>]</span><br><span class="line">    c = base64.b64decode(key1)</span><br><span class="line">    d = str(c).split(<span class="string">':'</span>)</span><br><span class="line">    key = base64.b64decode(d[<span class="number">1</span>])</span><br><span class="line">    body = &#123;<span class="string">"ichunqiu"</span>:key&#125;</span><br><span class="line">    f = a.post(<span class="string">"http://1d244bd2e1664e07b80cc2b714ddc1c4a12576508f544c34.changame.ichunqiu.com/"</span>,data=body)</span><br><span class="line">    <span class="keyword">print</span> (f.text)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 
 <p>跑完脚本会给个路径 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567173906032.png" alt="1567173906032"></p>
+<p><img src="/Summary-of-Web/1567173906032.png" alt="1567173906032"></p>
 <p>进去看看 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567173950524.png" alt="1567173950524"></p>
+<p><img src="/Summary-of-Web/1567173950524.png" alt="1567173950524"></p>
 <p>是一个login页面。扫描一下会发现有svn源码泄露，username在url.svn/wc.db里面 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567174085010.png" alt="1567174085010"></p>
+<p><img src="/Summary-of-Web/1567174085010.png" alt="1567174085010"></p>
 <p>password随便。验证地方的意思验证码md5加密后前六位是ecd7c7，需要写脚本：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> hashlib.md5(str(s).encode(<span class="string">'utf-8'</span>)).hexdigest()</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">99999999</span>):</span><br><span class="line">        <span class="keyword">if</span> md5(i)[<span class="number">0</span>:<span class="number">6</span>]  == str(s):</span><br><span class="line">            print(i)</span><br><span class="line">            exit(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main(<span class="string">"813e72"</span>)</span><br></pre></td></tr></table></figure>
 
 <p>跑一会儿就能出来，给出了下一个路径 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567174334789.png" alt="1567174334789"></p>
+<p><img src="/Summary-of-Web/1567174334789.png" alt="1567174334789"></p>
 <p>是一个文件上传，直接上传.pht文件就可以了 - -</p>
-<p><img src="/2019/08/31/Summary-of-Web/1567175089728.png" alt="1567175089728"></p>
+<p><img src="/Summary-of-Web/1567175089728.png" alt="1567175089728"></p>
 <hr>
 <center><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="450" height="86" src="//music.163.com/outchain/player?type=2&id=4988618&auto=1&height=66"></iframe>
 </center>
