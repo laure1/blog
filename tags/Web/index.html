@@ -351,17 +351,12 @@
                 <span>BUUCTF-WEB</span>
         </a>
         <div class="abstract-content">
-            随便注
-2019 强网杯
-
-解法一：堆叠注入/?inject=233’;show tables;#
-可以看到有两个表~
-
-
-先介绍一下prepare语法：PREPARE test from ‘我们的sql语句’;//预定义好sqlEXECUTE test (如果sql有参数的话, USING xxx,xxx); // (这里USING的只能是会话变量)执行预定义的sqlDEALLOCATE PREPARE test;//释放数据库连接
-
-所以可以构造如下：
-123?inject=233';set @sql=select * from `1919810931114514`;prepare ...
+            <h3 id="随便注"><a href="#随便注" class="headerlink" title="随便注"></a>随便注</h3><blockquote>
+<p>2019 强网杯</p>
+</blockquote>
+<h4 id="解法一：堆叠注入"><a href="#解法一：堆叠注入" class="headerlink" title="解法一：堆叠注入"></a>解法一：堆叠注入</h4><p>/?inject=233’;show tables;#</p>
+<p>可以看到有两个表~</p>
+<p><img src="/img/BUUCTF-WEB/1567737495728.png" alt="1567737495728"></p>
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -397,8 +392,7 @@
 </blockquote>
 <p>描述：PHP中md5($str,true)的SQL注入</p>
 <p>原题：Lett More CTF 2010</p>
-<p>例题：实验吧-后台登录</p>
-<p>网页源代码：
+<p>例题：实验吧-后台登录
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
