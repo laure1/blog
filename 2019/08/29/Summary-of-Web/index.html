@@ -403,13 +403,18 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h3 id="№-1-Fuzzing"><a href="#№-1-Fuzzing" class="headerlink" title="№.1 Fuzzing"></a>№.1 Fuzzing</h3><blockquote>
+        <blockquote>
+<p>你是人间烟火不自知，我在俗世仰望应如是。</p>
+</blockquote>
+<a id="more"></a>
+<hr>
+<h3 id="Fuzzing"><a href="#Fuzzing" class="headerlink" title="Fuzzing"></a>Fuzzing</h3><blockquote>
 <p>“百度杯”CTF比赛 十月场</p>
 </blockquote>
 <p>题目内容是：there is nothing</p>
 <p>用Burpsuite抓包一下，能看到一个hint - -</p>
 <p><img src="/img/Summary-of-Web/1566477766113.png" alt="1566477766113"></p>
-<p>它要求要大的内部网络，专用IP地址段为：<a id="more"></a><br>10.0.0.0–10.255.255.255<br>172.16.0.0–172.31.255.255<br>192.168.0.0–192.168.255.255</p>
+<p>它要求要大的内部网络，专用IP地址段为：<br>10.0.0.0–10.255.255.255<br>172.16.0.0–172.31.255.255<br>192.168.0.0–192.168.255.255</p>
 <p>所以修改请求头，加上X-Forward-For，一个个试一下。</p>
 <p>当修改为X-Forwarded-For:10.10.10时，会得到一个新的提示Location。</p>
 <p><img src="/img/Summary-of-Web/1566477893134.png" alt="1566477893134"></p>
@@ -433,7 +438,7 @@ height:50vh;
 <p>运行一下得到flag：</p>
 <p>flag{c1733e42-2c1c-481c-b49a-5b179dde9421}</p>
 <hr>
-<h3 id="№-2-Wanna-to-see-your-hat"><a href="#№-2-Wanna-to-see-your-hat" class="headerlink" title="№.2 Wanna to see your hat?"></a>№.2 Wanna to see your hat?</h3><blockquote>
+<h3 id="Wanna-to-see-your-hat"><a href="#Wanna-to-see-your-hat" class="headerlink" title="Wanna to see your hat?"></a>Wanna to see your hat?</h3><blockquote>
 <p>2017年全国大学生信息安全竞赛</p>
 </blockquote>
 <p>首先是一个登录页面 - -</p>
@@ -449,7 +454,7 @@ height:50vh;
 <p>发送后，可以看到多了一个’good job’，那应该是成功了，用这个payload去登录吧 - -</p>
 <p><img src="/img/Summary-of-Web/1566532188680.png" alt="1566532188680"></p>
 <hr>
-<h3 id="№-3-Hello-World"><a href="#№-3-Hello-World" class="headerlink" title="№.3 Hello World"></a>№.3 Hello World</h3><p>是一个Hello World界面 - -</p>
+<h3 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h3><p>是一个Hello World界面 - -</p>
 <p><img src="/img/Summary-of-Web/1567066965022.png" alt="1567066965022"></p>
 <p>先看一下源码 - -</p>
 <p><img src="/img/Summary-of-Web/1567067003511.png" alt="1567067003511"></p>
@@ -467,7 +472,7 @@ height:50vh;
 <p><img src="/img/Summary-of-Web/1567067476771.png" alt="1567067476771"></p>
 <p>flag{82efc37f1cd5d4636ea7cadcd5a814a2}</p>
 <hr>
-<h3 id="№-4-Upload"><a href="#№-4-Upload" class="headerlink" title="№.4 Upload"></a>№.4 Upload</h3><blockquote>
+<h3 id="Upload"><a href="#Upload" class="headerlink" title="Upload"></a>Upload</h3><blockquote>
 <p>今天开始做web题目，发现前面的都好难，中间的都做过了，就随便挑了一道，发现竟然是去年做过的题目，只是因为flag提交了不对所以没交flag…一年过去了，没有学过python的我还是这么菜，有点难过…我为什么这么菜呢，可能因为我不专心吧…</p>
 </blockquote>
 <p>题目内容是 - -<img src="/img/Summary-of-Web/1567173495060.png" alt="1567173495060"></p>
@@ -504,7 +509,7 @@ height:50vh;
             <p>Author：<a href="http://yoursite.com">Laurel</a>
             <p>原文链接：<a href="http://yoursite.com/2019/08/29/Summary-of-Web/">http://yoursite.com/2019/08/29/Summary-of-Web/</a>
             <p>发表日期：<a href="http://yoursite.com/2019/08/29/Summary-of-Web/">August 29th 2019, 5:16:18 am</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/08/29/Summary-of-Web/">September 6th 2019, 9:15:23 am</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/08/29/Summary-of-Web/">September 6th 2019, 10:00:22 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -676,7 +681,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#№-1-Fuzzing"><span class="toc-number">1.</span> <span class="toc-text">№.1 Fuzzing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#№-2-Wanna-to-see-your-hat"><span class="toc-number">2.</span> <span class="toc-text">№.2 Wanna to see your hat?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#№-3-Hello-World"><span class="toc-number">3.</span> <span class="toc-text">№.3 Hello World</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#№-4-Upload"><span class="toc-number">4.</span> <span class="toc-text">№.4 Upload</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fuzzing"><span class="toc-number">1.</span> <span class="toc-text">Fuzzing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Wanna-to-see-your-hat"><span class="toc-number">2.</span> <span class="toc-text">Wanna to see your hat?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hello-World"><span class="toc-number">3.</span> <span class="toc-text">Hello World</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Upload"><span class="toc-number">4.</span> <span class="toc-text">Upload</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
