@@ -274,7 +274,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">1.3k</span>Reading time: <span class="post-count reading-time">5 min</span></span>
+                        <span>Word count: <span class="post-count word-count">1.4k</span>Reading time: <span class="post-count reading-time">6 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -486,11 +486,19 @@ height:50vh;
 <p>这道题传的脚本内容如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64,requests</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    a = requests.session()</span><br><span class="line">    b = a.get(<span class="string">"http://1d244bd2e1664e07b80cc2b714ddc1c4a12576508f544c34.changame.ichunqiu.com/"</span>)</span><br><span class="line">    key1 = b.headers[<span class="string">"flag"</span>]</span><br><span class="line">    c = base64.b64decode(key1)</span><br><span class="line">    d = str(c).split(<span class="string">':'</span>)</span><br><span class="line">    key = base64.b64decode(d[<span class="number">1</span>])</span><br><span class="line">    body = &#123;<span class="string">"ichunqiu"</span>:key&#125;</span><br><span class="line">    f = a.post(<span class="string">"http://1d244bd2e1664e07b80cc2b714ddc1c4a12576508f544c34.changame.ichunqiu.com/"</span>,data=body)</span><br><span class="line">    <span class="keyword">print</span> (f.text)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 
-<p>跑完脚本会给个路径 - -</p>
-<p><img src="/img/Summary-of-Web/1567173906032.png" alt="1567173906032"></p>
+<p>跑完脚本会给个路径：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3712901a08bb58557943ca31f3487b7d</span><br></pre></td></tr></table></figure>
+
 <p>进去看看 - -</p>
 <p><img src="/img/Summary-of-Web/1567173950524.png" alt="1567173950524"></p>
-<p>是一个login页面。扫描一下会发现有svn源码泄露，username在url.svn/wc.db里面 - -</p>
+<p>是一个login页面，并且需要验证码，但是登录的username和password并不知道…用dirbuster扫一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 dirsearch.py -u &quot;http://56608d919c104308800865599180e0c3392214c297e54e30.changame.ichunqiu.com/3712901a08bb58557943ca31f3487b7d/&quot; -e *</span><br></pre></td></tr></table></figure>
+
+<p>发现有svn源码泄露 - -</p>
+<p><img src="/img/Summary-of-Web/1567950991319.png" alt="1567950991319"></p>
+<p>但是师傅们都是怎么找到wc.db文件的…萌新的我一脸懵逼…菜鸡不配写脚本，只能自欺欺人地假装跑一下23333 - -</p>
+<p><img src="/img/Summary-of-Web/1567952614236.png" alt="1567952614236"></p>
+<p>username就有了 - -</p>
 <p><img src="/img/Summary-of-Web/1567174085010.png" alt="1567174085010"></p>
 <p>password随便。验证地方的意思验证码md5加密后前六位是ecd7c7，需要写脚本：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> hashlib.md5(str(s).encode(<span class="string">'utf-8'</span>)).hexdigest()</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">99999999</span>):</span><br><span class="line">        <span class="keyword">if</span> md5(i)[<span class="number">0</span>:<span class="number">6</span>]  == str(s):</span><br><span class="line">            print(i)</span><br><span class="line">            exit(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main(<span class="string">"813e72"</span>)</span><br></pre></td></tr></table></figure>
@@ -501,6 +509,7 @@ height:50vh;
 <p><img src="/img/Summary-of-Web/1567175089728.png" alt="1567175089728"></p>
 <hr>
 <center><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="450" height="86" src="//music.163.com/outchain/player?type=2&id=4988618&auto=1&height=66"></iframe>
+
 </center>
     </article>
     <!-- license  -->
@@ -509,7 +518,7 @@ height:50vh;
             <p>Author：<a href="http://yoursite.com">Laurel</a>
             <p>原文链接：<a href="http://yoursite.com/2019/08/29/Summary-of-Web/">http://yoursite.com/2019/08/29/Summary-of-Web/</a>
             <p>发表日期：<a href="http://yoursite.com/2019/08/29/Summary-of-Web/">August 29th 2019, 5:16:18 am</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/08/29/Summary-of-Web/">September 6th 2019, 10:00:22 am</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/08/29/Summary-of-Web/">September 8th 2019, 10:27:15 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
