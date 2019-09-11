@@ -266,9 +266,9 @@ height:50vh;
                 
                     <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "Brush">Brush</a>
-    
         <a class="post-tag" href="javascript:void(0);" data-tags = "Misc">Misc</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Brush">Brush</a>
     
 </div>
                 
@@ -416,52 +416,52 @@ height:50vh;
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dig -t txt gamectf.com</span><br></pre></td></tr></table></figure>
 
 <p>直接就能看到flag - -</p>
-<p><img src="/img/Summary-of-Misc/1566190854573.png" alt="1566190854573"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566190854573.png" alt="1566190854573"></p>
 <hr>
 <h3 id="Photo-Steganography"><a href="#Photo-Steganography" class="headerlink" title="Photo Steganography"></a>Photo Steganography</h3><h4 id="亚瑟西"><a href="#亚瑟西" class="headerlink" title="亚瑟西"></a>亚瑟西</h4><blockquote>
 <p>网络与信息安全领域专项赛</p>
 </blockquote>
 <p>题目给了一个加密过的压缩包，看都没看直接爆破，全数字不对，那就全字母试试 - -</p>
-<p><img src="/img/Summary-of-Misc/1566192095186.png" alt="1566192095186"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566192095186.png" alt="1566192095186"></p>
 <p>但实际上呢，直接用十六进制分析工具打开，文件最后就能看到password…</p>
-<p><img src="/img/Summary-of-Misc/1566192301577.png" alt="1566192301577"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566192301577.png" alt="1566192301577"></p>
 <p>解密后是一个图片，图片末尾有一堆看起来像是加密过的东东，但我不知道这是啥加密…</p>
-<p><img src="/img/Summary-of-Misc/1566192792499.png" alt="1566192792499"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566192792499.png" alt="1566192792499"></p>
 <p>队友说那是ook，直接解密就是flag。但是我用ook解了半天也不行🙃后面我分析的时候才发现问题…当时我用的是UltraEdit，如果从右边的面板开始选择，那么第一排就只能选到4个点 - -</p>
-<p><img src="/img/Summary-of-Misc/1566193159531.png" alt="1566193159531"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566193159531.png" alt="1566193159531"></p>
 <p>但是如果我从左边面板开始选择，那就能选到5个点 - -</p>
-<p><img src="/img/Summary-of-Misc/1566193288204.png" alt="1566193288204"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566193288204.png" alt="1566193288204"></p>
 <p>正是因为比赛时我是从右边选择的，少了一个点，所以始终解不出来…</p>
 <p>现在来解密一下吧 - -</p>
-<p><img src="/img/Summary-of-Misc/1566193435124.png" alt="1566193435124"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566193435124.png" alt="1566193435124"></p>
 <p>就能得到flag啦 - -</p>
-<p><img src="/img/Summary-of-Misc/1566193462723.png" alt="1566193462723"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566193462723.png" alt="1566193462723"></p>
 <h4 id="七代目"><a href="#七代目" class="headerlink" title="七代目"></a>七代目</h4><blockquote>
 <p>网络与信息安全领域专项赛</p>
 </blockquote>
 <p>给的是一个gif图片，但是打不开，用十六进制看看，发现头部不对劲啊，咋是个PNG嘞 - -</p>
-<p><img src="/img/Summary-of-Misc/1566193649345.png" alt="1566193649345"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566193649345.png" alt="1566193649345"></p>
 <p>那就改成GIF吧 - -</p>
-<p><img src="/img/Summary-of-Misc/1566193689595.png" alt="1566193689595"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566193689595.png" alt="1566193689595"></p>
 <p>改好之后图片就能正常显示了。用Stegsolve看一下每一帧，但是都没啥特别的。看一下每一帧的时间片 - -</p>
-<p><img src="/img/Summary-of-Misc/1566194113431.png" alt="1566194113431"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566194113431.png" alt="1566194113431"></p>
 <p>Look,第7帧和其他帧不一样，应该有猫腻，那就分离出来，然后切换一下通道看看 - -</p>
-<p><img src="/img/Summary-of-Misc/1566194298963.png" alt="1566194298963"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566194298963.png" alt="1566194298963"></p>
 <hr>
 <h3 id="Compression-Packet"><a href="#Compression-Packet" class="headerlink" title="Compression Packet"></a>Compression Packet</h3><h4 id="ReCreators"><a href="#ReCreators" class="headerlink" title="ReCreators"></a>ReCreators</h4><blockquote>
 <p>i春秋 第二届春秋欢乐赛</p>
 </blockquote>
 <p>题目给了一个无后缀的文件，file查看一下 - -</p>
-<p><img src="/img/Summary-of-Misc/1566699077598.png" alt="1566699077598"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566699077598.png" alt="1566699077598"></p>
 <p>是虚拟机VMware创建的虚拟硬盘格式，玩过虚拟机的都知道，后缀名应该是.vmdk。更改后缀名后解压，可以得到一个misc.mp4 - -</p>
-<p><img src="/img/Summary-of-Misc/1566699217039.png" alt="1566699217039"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566699217039.png" alt="1566699217039"></p>
 <p>用Editor打开，在末尾的时候会发现有一串数字 - -</p>
-<p><img src="/img/Summary-of-Misc/1566699664766.png" alt="1566699664766"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566699664766.png" alt="1566699664766"></p>
 <blockquote>
 <p>反正我自个做的时候是真的额没有注意到这里有一串这些东西。。师傅们都是些什么神仙。。</p>
 </blockquote>
 <p>把这段数字HexDecode两次，Base32解码三次，Base64解码两次，HexDecode一次，Base32解码一次，Base64解码两次，就是flag啦~</p>
-<p><img src="/img/Summary-of-Misc/1566700288923.png" alt="1566700288923"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566700288923.png" alt="1566700288923"></p>
 <h4 id="CryMisc"><a href="#CryMisc" class="headerlink" title="CryMisc"></a>CryMisc</h4><blockquote>
 <p>i春秋 第二届春秋欢乐赛</p>
 <p>这道题对我来说偏hard,因为我密码学学得不太好，而且没学过python，写脚本有点困难（啊我好菜啊）。</p>
@@ -478,13 +478,13 @@ height:50vh;
 <p>如果使用360压缩的话，，解不粗来的，，</p>
 </blockquote>
 <p>选择明文攻击，导入这两个压缩包之后点击开始。先进行搜索密钥，找到匹配的密钥后会进行攻击。我们在找到密钥的时候就可以停止了，然后点击确定导出解密的压缩包crypto_decrypted.zip - -</p>
-<p><img src="/img/Summary-of-Misc/1566611818570.png" alt="1566611818570"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566611818570.png" alt="1566611818570"></p>
 <p>gogogo解压后是三个文件，AESencrypt.py内容如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf8 -*-</span></span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"></span><br><span class="line">s=open(<span class="string">'next.zip'</span>,<span class="string">'rb'</span>).read()</span><br><span class="line">BS=<span class="number">16</span></span><br><span class="line">pad_len=BS-len(s)%BS</span><br><span class="line">padding=chr(pad_len)*pad_len</span><br><span class="line">s+=padding</span><br><span class="line"></span><br><span class="line">key=<span class="string">'我后来忘了'</span></span><br><span class="line">n=<span class="number">0x48D6B5DAB6617F21B39AB2F7B14969A7337247CABB417B900AE1D986DB47D971</span></span><br><span class="line">e=<span class="number">0x10001</span></span><br><span class="line">m=long(key.encode(<span class="string">'hex'</span>),<span class="number">16</span>)</span><br><span class="line">c=pow(m,e,n)</span><br><span class="line">c=<span class="string">'0&#123;:x&#125;'</span>.format(c).decode(<span class="string">'hex'</span>)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'RSA.encrypt'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(c)</span><br><span class="line"></span><br><span class="line">obj=AES.new(key,AES.MODE_ECB)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'AES.encryt'</span>,<span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(obj.encrypt(s))</span><br></pre></td></tr></table></figure>
 
 <p>意思就是RSA.encrypt是对key RSA加密后的内容，AES.encrypt中是先AES加密然后把key RSA加密的结果。</p>
 <p>首先使用yafu将n分解得到p和q，利用gmpy2可以解出d。</p>
-<p><img src="/img/Summary-of-Misc/1566634254708.png" alt="1566634254708"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566634254708.png" alt="1566634254708"></p>
 <p>脚本如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">c=long(open(<span class="string">'RSA.encrypt'</span>,<span class="string">'rb'</span>).read().encode(<span class="string">'hex'</span>),<span class="number">16</span>)</span><br><span class="line">n=<span class="number">0x48D6B5DAB6617F21B39AB2F7B14969A7337247CABB417B900AE1D986DB47D971</span></span><br><span class="line">e=<span class="number">0x10001</span></span><br><span class="line">p=<span class="number">185783328357334813222812664416930395483</span></span><br><span class="line">q=<span class="number">177334994338425644535647498913444186659</span></span><br><span class="line">d=gmpy2.invert(e,(p<span class="number">-1</span>)*(q<span class="number">-1</span>))</span><br><span class="line">m=pow(c,d,n)</span><br><span class="line">key=<span class="string">'&#123;:x&#125;'</span>.format(m).decode(<span class="string">'hex'</span>)</span><br><span class="line">print(key)</span><br><span class="line">s=open(<span class="string">'AES.encryt'</span>,<span class="string">'rb'</span>).read()</span><br><span class="line">obj=AES.new(key,AES.MODE_ECB)</span><br><span class="line">s=obj.decrypt(s)</span><br><span class="line">BS=<span class="number">16</span></span><br><span class="line">pad_len=ord(s[<span class="number">-1</span>])</span><br><span class="line">s=s[:<span class="number">-1</span>*pad_len]</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'next.zip'</span>,<span class="string">'web'</span>) <span class="keyword">as</span> f:</span><br><span class="line">	f.write(s)</span><br></pre></td></tr></table></figure>
 
@@ -499,11 +499,11 @@ height:50vh;
 <p>讲道理我还是觉得前面的过程好复杂…</p>
 </blockquote>
 <p>对于这个flag.jpg呢，binwalk了一下 - -</p>
-<p><img src="/img/Summary-of-Misc/1566637360803.png" alt="1566637360803"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566637360803.png" alt="1566637360803"></p>
 <p>放到010Editor里面愣是没找到哪里有藏东西，原来是藏了一个PSD文件 - -</p>
-<p><img src="/img/Summary-of-Misc/1566637577938.png" alt="1566637577938"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566637577938.png" alt="1566637577938"></p>
 <p>将其导出然后用Photoshop打开 - -</p>
-<p><img src="/img/Summary-of-Misc/1566637664082.png" alt="1566637664082"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566637664082.png" alt="1566637664082"></p>
 <blockquote>
 <p>这个flag当然是假的啦，你见过中文的flag吗？？？</p>
 </blockquote>
@@ -511,19 +511,19 @@ height:50vh;
 <blockquote>
 <p>还是想说，这尼玛Crypto和Misc结合的题目都好难啊😭</p>
 </blockquote>
-<p><img src="/Summary-of-Misc/m2.jpg" alt="m2"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/m2.jpg" alt="m2"></p>
 <hr>
 <h3 id="Traffic-Analysis"><a href="#Traffic-Analysis" class="headerlink" title="Traffic Analysis"></a>Traffic Analysis</h3><h4 id="可恶的黑客"><a href="#可恶的黑客" class="headerlink" title="可恶的黑客"></a>可恶的黑客</h4><p>题目给了一个pcap流量包，用Wireshark打开。我先试着搜索了一下flag，然后看到有个flAg.txt（虽然没有什么卵用） - -</p>
-<p><img src="/img/Summary-of-Misc/1566713297822.png" alt="1566713297822"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566713297822.png" alt="1566713297822"></p>
 <p>注意text data，这句话的内容是：我的支付宝账号(count打错了吧…)是blablabla，当你支付后，flag.txt会出现在这个菜刀里。看起来像是一个（英语不好的）黑客和用户在对话，那我们追踪一下TCP流看一下 - -</p>
-<p><img src="/img/Summary-of-Misc/1566713568199.png" alt="1566713568199"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566713568199.png" alt="1566713568199"></p>
 <p>从第六条流开始，末尾就是双方对话的内容。</p>
 <blockquote>
-<p>这个when my flag是认真的吗…<img src="/img/Summary-of-Misc/1566713710554.png" alt="1566713710554"></p>
+<p>这个when my flag是认真的吗…<img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566713710554.png" alt="1566713710554"></p>
 </blockquote>
-<p>在25流的时候，黑客告诉对方，去看hnt.txt - -<img src="/img/Summary-of-Misc/1566713921793.png" alt="1566713921793"></p>
+<p>在25流的时候，黑客告诉对方，去看hnt.txt - -<img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566713921793.png" alt="1566713921793"></p>
 <p>去查找一下hnt.txt中的内容，看到了一串东西 - -</p>
-<p><img src="/img/Summary-of-Misc/1566714006853.png" alt="1566714006853"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566714006853.png" alt="1566714006853"></p>
 <p>这是Unicode转义后的结果，我们只需要将其转回字符串就行了，Python大法好啊：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> lxml.html</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a=<span class="string">'&amp;#102;&amp;#49;&amp;#97;&amp;#103;&amp;#123;&amp;#115;&amp;#105;&amp;#49;&amp;#49;&amp;#121;&amp;#98;&amp;#48;&amp;#121;&amp;#101;&amp;#109;&amp;#109;&amp;#109;&amp;#125;'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lxml.html.fromstring(a).text</span><br><span class="line"><span class="string">'f1ag&#123;si11yb0yemmm&#125;'</span></span><br></pre></td></tr></table></figure>
 
@@ -531,22 +531,22 @@ height:50vh;
 <p>第三届上海市大学生网络安全大赛</p>
 </blockquote>
 <p>文件中包含了TCP,UDP,ICMPv6,DNS,TLS等协议，http对象不能导出。还是先搜索了一下字符串flag，发现了flag.txt和flag.zip等。然后追踪一下TCP流，在Stream38和Stream44分别有一个flag.zip，先导出来看看，都是加密的，把0900改成0000也不能打开。</p>
-<p>Stream42的内容为 - -<img src="/img/Summary-of-Misc/1566721858932.png" alt="1566721858932"></p>
-<p>Steam55的内容为 - -<img src="/img/Summary-of-Misc/1566721920678.png" alt="1566721920678"></p>
+<p>Stream42的内容为 - -<img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566721858932.png" alt="1566721858932"></p>
+<p>Steam55的内容为 - -<img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566721920678.png" alt="1566721920678"></p>
 <p>有没有发现多了一个key.log哇，在Stream58 - -</p>
-<p><img src="/img/Summary-of-Misc/1566722269144.png" alt="1566722269144"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566722269144.png" alt="1566722269144"></p>
 <p>点开协议首选项管理器 - -</p>
-<p><img src="/img/Summary-of-Misc/1566722339549.png" alt="1566722339549"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566722339549.png" alt="1566722339549"></p>
 <p>给SSL协议导入刚才发现的key.log - -</p>
-<p><img src="/img/Summary-of-Misc/1566722417378.png" alt="1566722417378"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566722417378.png" alt="1566722417378"></p>
 <p>这样一来，http对象可见了 - -</p>
-<p><img src="/img/Summary-of-Misc/1566722526104.png" alt="1566722526104"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566722526104.png" alt="1566722526104"></p>
 <p>Packet8005的大小单位是kb，其他文件都是bytes，说明这个zip文件有东西，那就保存下来研究研究。解压之后是2.mp3。用Audacity打开看看，最后面那里看起来像是脱节的 - -</p>
-<p><img src="/img/Summary-of-Misc/1566722660215.png" alt="1566722660215"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566722660215.png" alt="1566722660215"></p>
 <p>其实就算听一下也会发现，后面全是杂音。所以切换一下频谱图看看，啥都看不到 - -</p>
-<p><img src="/img/Summary-of-Misc/1566722746046.png" alt="1566722746046"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566722746046.png" alt="1566722746046"></p>
 <p>为什么呢，因为拉得太高了，只显示了下面的…鼠标放在左边那里，缩小一点，就能看到key了 - -</p>
-<p><img src="/img/Summary-of-Misc/1566722865977.png" alt="1566722865977"></p>
+<p><img src="/2019/08/19/Summary-of-Misc/Summary-of-Misc/1566722865977.png" alt="1566722865977"></p>
 <p>拿这个key去解密之前的某个压缩包，就能得到flag。</p>
 <hr>
 <center><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="450" height="86" src="//music.163.com/outchain/player?type=2&id=477939&auto=1&height=66"></iframe>
@@ -788,6 +788,10 @@ top:50vh;
     
     
     
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 6
@@ -839,15 +843,15 @@ top:50vh;
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="Web"><span class="iconfont-archer">&#xe606;</span>Web</span>
-    
-        <span class="sidebar-tag-name" data-tags="Brush"><span class="iconfont-archer">&#xe606;</span>Brush</span>
-    
         <span class="sidebar-tag-name" data-tags="Java"><span class="iconfont-archer">&#xe606;</span>Java</span>
     
         <span class="sidebar-tag-name" data-tags="Misc"><span class="iconfont-archer">&#xe606;</span>Misc</span>
     
+        <span class="sidebar-tag-name" data-tags="Web"><span class="iconfont-archer">&#xe606;</span>Web</span>
+    
         <span class="sidebar-tag-name" data-tags="SQL"><span class="iconfont-archer">&#xe606;</span>SQL</span>
+    
+        <span class="sidebar-tag-name" data-tags="Brush"><span class="iconfont-archer">&#xe606;</span>Brush</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -882,11 +886,11 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="CTF"><span class="iconfont-archer">&#xe60a;</span>CTF</span>
-    
         <span class="sidebar-category-name" data-categories="JAVA"><span class="iconfont-archer">&#xe60a;</span>JAVA</span>
     
         <span class="sidebar-category-name" data-categories="SQL"><span class="iconfont-archer">&#xe60a;</span>SQL</span>
+    
+        <span class="sidebar-category-name" data-categories="CTF"><span class="iconfont-archer">&#xe60a;</span>CTF</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
