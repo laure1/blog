@@ -411,10 +411,7 @@ height:50vh;
 <p>flag是交括号里面的flag是交括号里面的flag是交括号里面的</p>
 </blockquote>
 <hr>
-<h4 id="欢迎参加"><a href="#欢迎参加" class="headerlink" title="欢迎参加"></a>欢迎参加</h4><blockquote>
-<p>这道题目是小花姐先做粗来的，我没想到<code>hash</code>计算之后是要放在<code>session</code>里面提交，赛后来做一做，算是签到题叭。</p>
-</blockquote>
-<p><img src="/2019/09/25/zjctf2019/1568289964870.png" alt="1568289964870"></p>
+<h4 id="欢迎参加"><a href="#欢迎参加" class="headerlink" title="欢迎参加"></a>欢迎参加</h4><p><img src="/2019/09/25/zjctf2019/1568289964870.png" alt="1568289964870"></p>
 <p>查看<code>SourceCode</code>：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;head&gt;<span class="xml"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">utf-8</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Please log in as an admin!!!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><span class="xml"><span class="comment">&lt;!-- something was encrypted by a non-reversible encryption algorithm. --&gt;</span></span></span><br></pre></td></tr></table></figure>
 
@@ -496,7 +493,7 @@ height:50vh;
 <hr>
 <p>唉，感觉自己傻了很多次，再接再厉叭~</p>
 <hr>
-<h3 id="线下"><a href="#线下" class="headerlink" title="线下"></a>线下</h3><p>比去年表现好一点，但是不太满意自己的表现，需要学习的东西还有很多。再一次被自己菜哭。</p>
+<h3 id="线下"><a href="#线下" class="headerlink" title="线下"></a>线下</h3><p>比去年表现好一点，但是不太满意自己的表现，需要学习的东西还有很多。再一次被自己菜哭。不过，见到了老盆友们还是很开森呐~~</p>
 <hr>
 <h4 id="万能密码"><a href="#万能密码" class="headerlink" title="万能密码"></a>万能密码</h4><p>刚开始窝和小花姐试的是单引号的，没想到改成双引号就行了，现场自闭。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot; or&quot;a&quot;=&quot;a</span><br><span class="line"></span><br><span class="line">zjctf&#123;Un1v3rsAl_pAs5w0rd_Usef^L&#125;</span><br></pre></td></tr></table></figure>
@@ -505,7 +502,7 @@ height:50vh;
 <h4 id="逆转思维"><a href="#逆转思维" class="headerlink" title="逆转思维"></a>逆转思维</h4><blockquote>
 <p>听说是Bugku的原题？听说去年好几道都是Bugku的原题？听说明年在我们学校？猜猜我们去哪个OJ找原题？</p>
 </blockquote>
-<p><code>index.php</code>如下：</p>
+<p><code>index.php</code>：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>  </span><br><span class="line">$text = $_GET[<span class="string">"text"</span>];  </span><br><span class="line">$file = $_GET[<span class="string">"file"</span>];  </span><br><span class="line">$password = $_GET[<span class="string">"password"</span>]; </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($text)&amp;&amp;(file_get_contents($text,<span class="string">'r'</span>)===<span class="string">"welcome to the zjctf"</span>))&#123;  </span><br><span class="line">    <span class="keyword">echo</span> <span class="string">"&lt;br&gt;&lt;h1&gt;"</span>.file_get_contents($text,<span class="string">'r'</span>).<span class="string">"&lt;/h1&gt;&lt;/br&gt;"</span>; </span><br><span class="line">    <span class="keyword">if</span>(preg_match(<span class="string">"/flag/"</span>,$file))&#123; </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">"Not now!"</span>;</span><br><span class="line">        <span class="keyword">exit</span>();         </span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;  </span><br><span class="line">        <span class="keyword">include</span>($file);  <span class="comment">//useless.php</span></span><br><span class="line">        $password = unserialize($password);</span><br><span class="line">        <span class="keyword">echo</span> $password;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p><code>text</code>参数的内容应该指向<code>welcome to the zjctf</code>，所以可以构造<code>text=php://input</code>，然后<code>POST</code>上面那串字符串就能过第一个判断。</p>
@@ -532,10 +529,9 @@ height:50vh;
 </blockquote>
 <p>在<code>game_manager.js</code>里面，将<code>score</code>改成15000 - -</p>
 <p><img src="/2019/09/25/zjctf2019/1569042566334.png" alt="1569042566334"></p>
-<p>然后发现并没有什么反应，然后随便玩，玩到<code>Game Over</code>的时候，会发现多了好多个<code>index</code>，里面有<code>flag</code>了 - -</p>
+<p>然后发现并没有什么反应，然后随便玩，玩到<code>Game Over</code>的时候，会发现多了好多个<code>index</code>，里面就有<code>flag</code> - -</p>
 <p><img src="/2019/09/25/zjctf2019/1569042519669.png" alt="1569042519669"></p>
-<center>ZJCTF{t0_p0is0n3d_by_i}</center>
-
+<p><code>ZJCTF{t0_p0is0n3d_by_i}</code></p>
 <hr>
 <h4 id="清廉校园"><a href="#清廉校园" class="headerlink" title="清廉校园"></a>清廉校园</h4><blockquote>
 <p>后面放出来的附加题，秒出的<code>misc</code>题目，不知道是哪位大兄dei放的，实在是太感动了❤❤❤</p>
@@ -543,7 +539,7 @@ height:50vh;
 <p>图片末尾有一串凯撒加密过的密文：<code>gqjam{dlsjvtlavokbzljshi}</code></p>
 <p>解密一下：<code>zjctf{welcometohduseclab}</code></p>
 <hr>
-<p>以上是线下咱们做粗来的题目，赛后和童鞋们交流了一下，感觉遗憾贼多…</p>
+<p>以上是线下咱们做粗来的题目，赛后和兄dei萌交流了一下，感觉遗憾贼多…</p>
 <p>下面两道是赛后做的，，都怪窝，，本来还能出一道的，，哭了</p>
 <hr>
 <h4 id="反推蟒蛇"><a href="#反推蟒蛇" class="headerlink" title="反推蟒蛇"></a>反推蟒蛇</h4><blockquote>
@@ -557,12 +553,10 @@ height:50vh;
 
 <p>代码的意思是，获取<code>__</code>的ascii码值，然后在65和ascii码值之间取随机数再乘以255，然后循环计算。输出为<code>flag.enc</code>里面的内容，所以反推flag。</p>
 <p>遍历65~127，计算出字符加密后的结果，然后和<code>flag.enc</code>中的字符串进行匹配。</p>
-<p>solution.py</p>
+<p>solution.py：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">from random import randint</span><br><span class="line">from math import floor, sqrt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">num = [i for i in range(65,127)]</span><br><span class="line">encry=[57, 183, 124, 9, 149, 65, 245, 166, 175, 1, 226, 106, 216, 132, 224, 208, 139, 1, 188, 224, 9, 235, 106, 149, 141, 80]</span><br><span class="line">for j in range(65*255,127*255,255):</span><br><span class="line">    dic=&#123;&#125;</span><br><span class="line">    for i in range(len(num)):</span><br><span class="line">        inte = int(floor(float(j + num[i]) / 2 + sqrt(j * num[i])) % 255)</span><br><span class="line">        dic[inte] = chr(num[i])</span><br><span class="line">    try:</span><br><span class="line">        flag=&apos;&apos;.join([dic[i] for i in encry])</span><br><span class="line">        print flag</span><br><span class="line">    except:</span><br><span class="line">        pass</span><br></pre></td></tr></table></figure>
 
-<center>flag：zjctf{ThisRandomIsNotSafe}</center>
-<center>🐂🍺</center>
-
+<p><code>zjctf{ThisRandomIsNotSafe}</code></p>
 <hr>
 <h4 id="加载页面"><a href="#加载页面" class="headerlink" title="加载页面"></a>加载页面</h4><p>给了一张loading.png - -</p>
 <p><img src="/2019/09/25/zjctf2019/loading.png" alt="loading"></p>
@@ -574,16 +568,25 @@ height:50vh;
 <p>嗯去找小林子玩耍，嗷她说loading上面是个条形码，</p>
 <p>瓦特？什么条形码？窝怎么没看到？</p>
 <p>你没看到吗？就在loading60%上面啊，那么明显的！</p>
-<p>啊？我没印象啊，真的有吗，啊我傻了…我真没看到啊…</p>
-<p>刚才开个电脑再看了一下，依然不觉得是条形码，，</p>
+<p>啊？？？（黑人问号</p>
+<blockquote>
+<p>刚才开个电脑再看了一下，依然不觉得像是条形码，，</p>
 <p>如果再来一次，我还是看不粗来那是个条形码，，</p>
-<p>好叭，扫出来的结果是<code>may6e_us3ful</code>，嗯这就是<code>flag</code>了…</p>
-<p>同时也是前面那个压缩包的密码，解压出来是这套算法：</p>
+</blockquote>
+<p>好叭，扫出来的结果是<code>may6e_us3ful</code>，嗯这就是压缩包的密码…解压出来是这套算法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> scipy.misc <span class="keyword">import</span> imread, imsave</span><br><span class="line"></span><br><span class="line">img_name = <span class="string">"loading.png"</span></span><br><span class="line">words = <span class="string">'''ZJCTF&#123;****************&#125;'''</span></span><br><span class="line"></span><br><span class="line">bits = []</span><br><span class="line"><span class="keyword">for</span> w <span class="keyword">in</span> words:</span><br><span class="line">	bits += <span class="string">"&#123;:0&gt;8d&#125;"</span>.format(int(bin(ord(w))[<span class="number">2</span>:]))</span><br><span class="line"></span><br><span class="line">cnt = <span class="number">0</span></span><br><span class="line">img = imread(img_name)</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(img.shape[<span class="number">1</span>]):</span><br><span class="line">	<span class="keyword">for</span> y <span class="keyword">in</span> range(img.shape[<span class="number">0</span>]):</span><br><span class="line">		<span class="keyword">if</span> img[y][x][<span class="number">0</span>] &lt;= <span class="number">97</span>:</span><br><span class="line">			img[y][x][<span class="number">0</span>] = <span class="number">2</span></span><br><span class="line">			<span class="keyword">if</span> cnt == len(bits):</span><br><span class="line">				<span class="keyword">continue</span></span><br><span class="line">			<span class="keyword">if</span> int(bits[cnt]) == <span class="number">0</span>:</span><br><span class="line">				img[y][x][<span class="number">0</span>] = <span class="number">2</span></span><br><span class="line">			<span class="keyword">else</span>:</span><br><span class="line">				img[y][x][<span class="number">0</span>] = <span class="number">3</span></span><br><span class="line">			cnt += <span class="number">1</span></span><br><span class="line">imsave(<span class="string">"loading.png"</span>, img)</span><br></pre></td></tr></table></figure>
 
-<p>杭电的师傅实在是…太猛了…❤🐂🍺</p>
+<p>解密脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"><span class="keyword">from</span> imageio <span class="keyword">import</span> imread</span><br><span class="line">file_name = <span class="string">'loading.png'</span></span><br><span class="line">img = imread(file_name)</span><br><span class="line">cnt = <span class="number">0</span></span><br><span class="line">flag = []</span><br><span class="line">temp = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(img.shape[<span class="number">1</span>]):</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> range(img.shape[<span class="number">0</span>]):</span><br><span class="line">        <span class="keyword">if</span>(img[y][x][<span class="number">0</span>] &lt;= <span class="number">97</span>):</span><br><span class="line">            <span class="keyword">if</span>(cnt == <span class="number">184</span>):</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">if</span>(img[y][x][<span class="number">0</span>] == <span class="number">2</span>):</span><br><span class="line">                flag.append(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">elif</span>(img[y][x][<span class="number">0</span>] == <span class="number">3</span>):</span><br><span class="line">                flag.append(<span class="number">1</span>)</span><br><span class="line">            cnt += <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(flag),<span class="number">8</span>):</span><br><span class="line">    temp = flag[i:i+<span class="number">8</span>]</span><br><span class="line">    a = <span class="string">''</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(len(temp)):</span><br><span class="line">        a += str(temp[j])</span><br><span class="line">    a = int(a,<span class="number">2</span>)</span><br><span class="line">    print(chr(a),end = <span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>ZJCTF{st3gan0_1s_ea5y}</code></p>
+<p>杭电的师傅实在是…太猛了…❤</p>
+<center>🐂🍺</center>
+
 <hr>
 <center><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="450" height="86" src="//music.163.com/outchain/player?type=2&id=477939&auto=1&height=66"></iframe>
+
+
 </center>
     </article>
     <!-- license  -->
@@ -592,7 +595,7 @@ height:50vh;
             <p>Author：<a href="http://laure1.github.io">Laurel</a>
             <p>原文链接：<a href="https://laure1.github.io/2019/09/25/zjctf2019/">https://laure1.github.io/2019/09/25/zjctf2019/</a>
             <p>发表日期：<a href="https://laure1.github.io/2019/09/25/zjctf2019/">September 25th 2019, 4:58:10 am</a>
-            <p>更新日期：<a href="https://laure1.github.io/2019/09/25/zjctf2019/">October 9th 2019, 7:35:34 am</a>
+            <p>更新日期：<a href="https://laure1.github.io/2019/09/25/zjctf2019/">October 13th 2019, 8:53:25 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
