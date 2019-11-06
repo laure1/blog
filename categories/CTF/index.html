@@ -346,6 +346,45 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/06/Two-flow-analysis-problems-of-3CTF/" >
+            
+                <span>Two flow analysis problems of 3CTF</span>
+        </a>
+        <div class="abstract-content">
+            第一道忘了叫啥了是初赛的Misc1题目，给了一个1.pcap文件。内容是黑客进行bool盲注的过程。
+看一下HTTP，很容易看到一个readme.7z的压缩包，导出来，就一个readme.txt，没啥了。
+然后可以注意到，盲注过程中响应内容的大小不是706bytes就是722bytes。（刚开始我还在想这尼玛会不会是二进制，对不起打扰了
+706字节 - -
+
+722字节 - -
+
+比如说，攻击者刚开始爆数据库个数时：
+1?id=1&apos; and ((select count(schema_name) from information_schema.schemata) &gt; 0)...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/06</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Misc">Misc</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Competition">Competition</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/10/20/BUUCTF-WEB/" >
             
                 <span>BUUCTF-WEB</span>
@@ -706,9 +745,20 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 10
+        Total : 11
         </div>
         <!-- search  -->
         
@@ -721,6 +771,11 @@
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/Two-flow-analysis-problems-of-3CTF/" >Two flow analysis problems of 3CTF</a>
+        </li>
     
     
         <li class="archive-post-item">

