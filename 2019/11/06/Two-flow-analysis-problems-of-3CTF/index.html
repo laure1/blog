@@ -403,7 +403,12 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h3 id="第一道忘了叫啥了"><a href="#第一道忘了叫啥了" class="headerlink" title="第一道忘了叫啥了"></a>第一道忘了叫啥了</h3><p>是初赛的Misc1题目，给了一个1.pcap文件。内容是黑客进行bool盲注的过程。</p>
+        <blockquote>
+<p>白月光，心里某个地方。</p>
+</blockquote>
+<hr>
+<a id="more"></a>
+<h3 id="第一道忘了叫啥了"><a href="#第一道忘了叫啥了" class="headerlink" title="第一道忘了叫啥了"></a>第一道忘了叫啥了</h3><p>是初赛的Misc1题目，给了一个1.pcap文件。内容是黑客进行bool盲注的过程。</p>
 <p>看一下HTTP，很容易看到一个readme.7z的压缩包，导出来，就一个readme.txt，没啥了。</p>
 <p>然后可以注意到，盲注过程中响应内容的大小不是706bytes就是722bytes。（刚开始我还在想这尼玛会不会是二进制，对不起打扰了</p>
 <p>706字节 - -</p>
@@ -449,7 +454,7 @@ height:50vh;
 <p>然后就是需要解密一下攻击者POST的内容了。我先试了试使用key进行异或解密：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    &#123;   </span><br><span class="line">        $key = <span class="string">'d59042be6e437849'</span>;</span><br><span class="line">        $post = <span class="string">'DzqZ3o6...内容太长此处省略'</span>;</span><br><span class="line">        $t=<span class="string">"base64_"</span>.<span class="string">"decode"</span>;</span><br><span class="line">        $post=$t($post.<span class="string">""</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($post);$i++) &#123;</span><br><span class="line">                $post[$i] = $post[$i]^$key[$i+<span class="number">1</span>&amp;<span class="number">15</span>]; &#125;</span><br><span class="line">                <span class="keyword">print</span> $post;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>但是解密后的内容乱乱的，所以应该不是。那就大概是AES了吧。然后去度娘上找了好几个网站，统统解不出来。我还用脚本试了试，也不行。<img src="C:/Users/65725/Pictures/b1.jpg" alt="b1"></p>
+<p>但是解密后的内容乱乱的，所以应该不是。那就大概是AES了吧。然后去度娘上找了好几个网站，统统解不出来。我还用脚本试了试，也不行。</p>
 <p>然后表哥给了一个网址，就能解出来了：<a href="http://tools.bugscaner.com/cryptoaes/" target="_blank" rel="noopener">http://tools.bugscaner.com/cryptoaes/</a></p>
 <p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/b2.gif" alt="b2"></p>
 <p>将解密后的内容再base64一下就能看到攻击者具体在干什么了：</p>
@@ -509,7 +514,16 @@ height:50vh;
 <p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573008605138.png" alt="1573008605138"></p>
 <p>这当然打不开，开头必须是<code>02 00</code> （因为我一开始也删多了然后拿它和本机系统的文件比对了一下- -</p>
 <p><img src="/2019/11/06/Two-flow-analysis-problems-of-3CTF/1573008664282.png" alt="1573008664282"></p>
+<hr>
+<blockquote>
+<p>那么亮，却那么冰凉。</p>
+</blockquote>
+<center><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="386" height="86" src="//music.163.com/outchain/player?type=2&id=503740887&auto=1&height=66"></iframe>
 
+
+
+
+</center>
     </article>
     <!-- license  -->
     
@@ -517,7 +531,7 @@ height:50vh;
             <p>Author：<a href="http://laure1.github.io">Laurel</a>
             <p>原文链接：<a href="https://laure1.github.io/2019/11/06/Two-flow-analysis-problems-of-3CTF/">https://laure1.github.io/2019/11/06/Two-flow-analysis-problems-of-3CTF/</a>
             <p>发表日期：<a href="https://laure1.github.io/2019/11/06/Two-flow-analysis-problems-of-3CTF/">November 6th 2019, 8:20:21 pm</a>
-            <p>更新日期：<a href="https://laure1.github.io/2019/11/06/Two-flow-analysis-problems-of-3CTF/">November 6th 2019, 7:48:16 am</a>
+            <p>更新日期：<a href="https://laure1.github.io/2019/11/06/Two-flow-analysis-problems-of-3CTF/">November 6th 2019, 8:28:28 am</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
